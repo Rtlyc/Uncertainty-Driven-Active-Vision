@@ -13,7 +13,7 @@ from PIL import Image
 
 
 # IMAGE_LOCATION = "../data/images/"
-IMAGE_LOCATION = "../our_data/test/"
+IMAGE_LOCATION = "../our_data/Test/"
 VOXEL_LOCATION = "../data/voxels/"
 OBJ_LOCATION = "../data/objects/"
 NUM_IMAGES = 8 #25
