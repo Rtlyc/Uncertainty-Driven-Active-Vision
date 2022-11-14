@@ -150,6 +150,7 @@ def get_rays(self, locations, resolution=128):
 def subsample_rays(self, ray_points, ray_masks, imgs, num_points, seed=None):
 
     bs = imgs.shape[0]
+    print(bs)
     imgs = imgs.view(bs, 3, -1).permute(0, 2, 1).contiguous()
     ray_points = ray_points.view(bs, -1, 128, 3)
     ray_masks = ray_masks.view(bs, -1, 128)
