@@ -95,7 +95,7 @@ class Engine(Checkpointable):
             train_data,
             batch_size=self.cfg.experiment.batch_size,
             shuffle=True,
-            num_workers=10,
+            num_workers=1, #10
             collate_fn=train_data.collate,
         )
         self.train_loader = train_loader
