@@ -141,6 +141,8 @@ class Engine(Checkpointable):
             input_params = batch["params"][:, :-1].cuda()
             num_images = np.random.choice(np.arange(1, self.cfg.NBV.budget + 1))
             output_imgs = batch["imgs"][:, -1].cuda()
+            print("hello")
+            print(output_imgs)
             output_params = batch["params"][:, -1].cuda()
 
             # get ray values for volume rendering and sumsample for training
