@@ -12,10 +12,11 @@ from scipy.spatial.transform import Rotation as R
 from PIL import Image
 
 
-IMAGE_LOCATION = "../data/images/"
+# IMAGE_LOCATION = "../data/images/"
+IMAGE_LOCATION = "../our_data/test/"
 VOXEL_LOCATION = "../data/voxels/"
 OBJ_LOCATION = "../data/objects/"
-NUM_IMAGES = 25
+NUM_IMAGES = 8 #25
 
 
 class data(object):
@@ -24,6 +25,7 @@ class data(object):
         self.args = args
         self.set_type = set_type
         object_names = np.load("../utils/obj_names.npy")
+        object_names = [_ for _ in range(8)]
         self.obj_location = OBJ_LOCATION
         self.training = set_type == "train"
         self.object_names = []

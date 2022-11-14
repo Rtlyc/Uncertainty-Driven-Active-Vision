@@ -8,12 +8,12 @@ experiment:
   logdir: logs # location of logs
   randomseed: 42  # seed
   patience: 50 # how many epoch without improvement before stopping
-  batch_size: 16 # batch size
-  num_epochs: 1000 # number of epochs
+  batch_size: 2 # batch size 16
+  num_epochs: 20 # number of epochs 1000
 
 model:
   image_embedding: 64 # size of the image embedding from the CNN
-  hidden_size: 200 # hidden layer size for basically every non CNN layer
+  hidden_size: 10 # hidden layer size for basically every non CNN layer 200
   decoder_layers: 3 # number of hidden layers
   CNN_ker_size: 3 # size of image kernels
   num_CNN_blocks: 4 # number of times to half image dimensions in CNN
@@ -27,6 +27,6 @@ loss:
   num_rays: 32 # number of pixels to samples from each target image which training
 
 NBV:
-  budget: 5 # how many images we want to use
+  budget: 2 # how many images we want to use 5
 
 
