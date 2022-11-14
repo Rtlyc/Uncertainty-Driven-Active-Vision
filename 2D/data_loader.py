@@ -80,7 +80,8 @@ class data(object):
 
     # get images from dataset
     def get_img(self, obj, seed):
-        img_location = IMAGE_LOCATION + f"/{obj}/"
+        # img_location = IMAGE_LOCATION + f"/{obj}/"
+        img_location = IMAGE_LOCATION
         if seed is not None:
             imgs_nums = np.random.RandomState(seed=seed).choice(
                 np.arange(NUM_IMAGES), self.args.NBV.budget + 1, replace=False
