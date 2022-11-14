@@ -39,6 +39,7 @@ class data(object):
             object_names = object_names[:1000]
 
         for i, n in enumerate(tqdm(object_names)):
+            self.object_names.append([n, None])
             if os.path.exists(VOXEL_LOCATION + n + ".npy"):
                 if set_type == "train" and int(n) < 23000:
                     self.object_names.append([n, None])
