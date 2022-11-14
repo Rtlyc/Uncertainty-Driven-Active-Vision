@@ -161,6 +161,7 @@ def subsample_rays(self, ray_points, ray_masks, imgs, num_points, seed=None):
         if seed is not None:
             torch.manual_seed(seed + j)
         idx = torch.randperm(imgs.shape[1])[:num_points]
+        print(f"imgs.shape:{idx}")
         i.append(imgs[j, idx])
         p.append(ray_points[j, idx])
         m.append(ray_masks[j, idx])
