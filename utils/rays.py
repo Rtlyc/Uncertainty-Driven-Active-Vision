@@ -163,6 +163,7 @@ def subsample_rays(self, ray_points, ray_masks, imgs, num_points, seed=None):
         # idx = torch.randperm(imgs.shape[1])[:num_points]
         idx = torch.randperm(2073600)[:num_points]
         # print(f"imgs.shape[1]:{imgs.shape[1]}")
+        print("ray_points tensor:", ray_points.size())
         i.append(imgs[j, idx])
         p.append(ray_points[j, idx])
         m.append(ray_masks[j, idx])
