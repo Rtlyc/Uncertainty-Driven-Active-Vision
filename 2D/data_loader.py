@@ -25,7 +25,7 @@ class data(object):
         self.args = args
         self.set_type = set_type
         object_names = np.load("../utils/obj_names.npy")
-        object_names = [_ for _ in range(8)]
+        object_names = [str(_) for _ in range(8)]
         self.obj_location = OBJ_LOCATION
         self.training = set_type == "train"
         self.object_names = []
