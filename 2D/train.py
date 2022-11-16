@@ -145,7 +145,7 @@ class Engine(Checkpointable):
             print(len(input_imgs))
             
             print("hello")
-            print(len(output_imgs))
+            print(output_imgs.size())
             output_params = batch["params"][:, -1].cuda()
 
             # get ray values for volume rendering and sumsample for training
