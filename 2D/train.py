@@ -90,7 +90,9 @@ class Engine(Checkpointable):
 
         # training dataloader
         train_data = data_loader.data(self.cfg, set_type="train")
-        train_data[0]
+        print("smart")
+        print(train_data[0].size())
+        print(train_data[0])
         train_loader = DataLoader(
             train_data,
             batch_size=self.cfg.experiment.batch_size,
