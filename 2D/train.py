@@ -96,21 +96,6 @@ class Engine(Checkpointable):
         print(train_data[0]['matricies'].size())
         print(train_data[0]['params'].size())
 
-        img_location = "../our_data/Test/"
-        n = 0
-        input_image = data_loader.preprocess_toTensor(Image.open(img_location + f"{n}.png"))
-        # load image parameters
-        params = np.load(img_location + f"P_{n}.npy", allow_pickle=True).item()
-        position = params["position"]
-        rotation = params["rotation"]
-        params = torch.FloatTensor(np.concatenate((position, data_loader.rotation_to_quat(rotation))))
-        matrix = data_loader.matrix_from_params(position, rotation)
-        print("wow")
-        print(input_image.size())
-        print(params.size())
-        print(matrix.size())
-
-        return
         train_loader = DataLoader(
             train_data,
             batch_size=self.cfg.experiment.batch_size,
