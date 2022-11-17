@@ -104,6 +104,7 @@ class Engine(Checkpointable):
         position = params["position"]
         rotation = params["rotation"]
         matrix = data_loader.matrix_from_params(position, rotation)
+        params = data_loader.preprocess_toTensor(params)
         print("wow")
         print(input_image.size())
         print(params.size())
