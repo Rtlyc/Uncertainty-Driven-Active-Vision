@@ -79,7 +79,7 @@ class Engine(Checkpointable):
         for i in range(start_iter, cfg.experiment.num_epochs):
             self.train()
             if i % 2 == 0 and i > start_iter:
-                self.validate()
+                # self.validate()
                 if self.check_values():
                     return
                 self.render()
