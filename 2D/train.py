@@ -98,7 +98,7 @@ class Engine(Checkpointable):
 
         img_location = "../our_data/Test/"
         n = 0
-        input_image = Image.open(img_location + f"{n}.png")
+        input_image = data_loader.preprocess_toTensor(Image.open(img_location + f"{n}.png"))
         # load image parameters
         params = np.load(img_location + f"P_{n}.npy", allow_pickle=True).item()
         position = params["position"]

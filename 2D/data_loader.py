@@ -44,6 +44,10 @@ def matrix_from_params(position, orientation):
 
     return torch.FloatTensor(K.dot(RT))
 
+def preprocess_toTensor(img):
+    preprocess = transforms.Compose([transforms.ToTensor()])
+    return preprocess(img)
+
 
 
 class data(object):
