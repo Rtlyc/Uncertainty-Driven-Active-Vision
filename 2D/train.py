@@ -82,7 +82,8 @@ class Engine(Checkpointable):
                 # self.validate()
                 # if self.check_values():
                 #     return
-                self.render()
+                # self.render()
+                self.eval_render()
                 self.save(best=False)
             self.epoch += 1
 
@@ -90,12 +91,6 @@ class Engine(Checkpointable):
 
         # training dataloader
         train_data = data_loader.data(self.cfg, set_type="train")
-        print("smart")
-        # print(train_data[0].size())
-        print(train_data[0]['imgs'].size())
-        print(train_data[0]['matricies'].size())
-        print(train_data[0]['params'].size())
-
         train_loader = DataLoader(
             train_data,
             batch_size=self.cfg.experiment.batch_size,
@@ -146,11 +141,6 @@ class Engine(Checkpointable):
             input_params = batch["params"][:, :-1].cuda()
             num_images = np.random.choice(np.arange(1, self.cfg.NBV.budget + 1))
             output_imgs = batch["imgs"][:, -1].cuda()
-            print("input hello")
-            print(len(input_imgs))
-            
-            print("hello")
-            print(output_imgs.size())
             output_params = batch["params"][:, -1].cuda()
 
             # get ray values for volume rendering and sumsample for training
