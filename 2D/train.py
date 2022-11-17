@@ -89,7 +89,7 @@ class Engine(Checkpointable):
     def get_loaders(self):
 
         # training dataloader
-        train_data = data_loader.data(self.cfg, set_type="test")
+        train_data = data_loader.data(self.cfg, set_type="train")
         print("smart")
         # print(train_data[0].size())
         print(train_data[0]['imgs'].size())
