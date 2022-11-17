@@ -103,7 +103,7 @@ class Engine(Checkpointable):
         params = np.load(img_location + f"P_{n}.npy", allow_pickle=True).item()
         position = params["position"]
         rotation = params["rotation"]
-        matrix = self.matrix_from_params(position, rotation)
+        matrix = data_loader.matrix_from_params(position, rotation)
         print("wow")
         print(input_image.size())
         print(params.size())

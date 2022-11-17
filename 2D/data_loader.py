@@ -19,6 +19,33 @@ OBJ_LOCATION = "../data/objects/"
 NUM_IMAGES = 8 #25
 
 
+def matrix_from_params(position, orientation):
+    orientation = R.from_euler("xyz", orientation, degrees=True).as_matrix()
+
+    R_bcam2cv = np.array(((1, 0, 0), (0, -1, 0), (0, 0, -1)))
+
+    R_world2bcam = orientation.transpose()
+    T_world2bcam = -1 * R_world2bcam @ position
+
+    R_world2cv = R_bcam2cv @ R_world2bcam
+    T_world2cv = R_bcam2cv @ T_world2bcam
+
+    # put into 3x4 matrix
+    RT = np.array(
+        (
+            list(R_world2cv[0][:]) + [T_world2cv[0]],
+            list(R_world2cv[1][:]) + [T_world2cv[1]],
+            list(R_world2cv[2][:]) + [T_world2cv[2]],
+        )
+    )
+
+    f = 221.7025
+    K = np.array([[f, 0, 128.0], [0, f, 128.0], [0, 0, 1]])
+
+    return torch.FloatTensor(K.dot(RT))
+
+
+
 class data(object):
     def __init__(self, args, set_type="train"):
         # initialization of data locations
