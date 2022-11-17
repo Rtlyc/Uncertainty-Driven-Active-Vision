@@ -401,8 +401,8 @@ class Engine(Checkpointable):
                 colour = torch.cat(preds, dim=1)
                 colour = colour.data.cpu().numpy()
                 pred_colours = (colour * 255).astype(np.uint8)
-                
-                print(pred_colours.size())
+
+                print(pred_colours)
 
                 # save image of predictions
                 picture = np.zeros((2 * 128, 6 * 128, 3))
