@@ -103,8 +103,8 @@ class Engine(Checkpointable):
         params = np.load(img_location + f"P_{n}.npy", allow_pickle=True).item()
         position = params["position"]
         rotation = params["rotation"]
+        params = torch.FloatTensor(np.concatenate((position, data_loader.rotation_to_quat(rotation))))
         matrix = data_loader.matrix_from_params(position, rotation)
-        params = data_loader.preprocess_toTensor(params)
         print("wow")
         print(input_image.size())
         print(params.size())

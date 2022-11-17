@@ -48,6 +48,9 @@ def preprocess_toTensor(img):
     preprocess = transforms.Compose([transforms.ToTensor()])
     return preprocess(img)
 
+def rotation_to_quat(rotation):
+    return R.from_euler("xyz", rotation, degrees=True).as_quat()
+
 
 
 class data(object):
