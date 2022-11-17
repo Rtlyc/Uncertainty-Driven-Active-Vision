@@ -80,8 +80,8 @@ class Engine(Checkpointable):
             self.train()
             if i % 2 == 0 and i > start_iter:
                 # self.validate()
-                if self.check_values():
-                    return
+                # if self.check_values():
+                #     return
                 self.render()
                 self.save(best=False)
             self.epoch += 1
