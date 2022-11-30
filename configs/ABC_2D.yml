@@ -8,12 +8,12 @@ experiment:
   logdir: logs # location of logs
   randomseed: 42  # seed
   patience: 50 # how many epoch without improvement before stopping
-  batch_size: 8 # batch size 16
-  num_epochs: 1000 # number of epochs 1000
+  batch_size: 1 # batch size 16
+  num_epochs: 100 # number of epochs 1000
 
 model:
   image_embedding: 64 # size of the image embedding from the CNN
-  hidden_size: 10 # hidden layer size for basically every non CNN layer 200
+  hidden_size: 200 # hidden layer size for basically every non CNN layer 200
   decoder_layers: 3 # number of hidden layers
   CNN_ker_size: 3 # size of image kernels
   num_CNN_blocks: 4 # number of times to half image dimensions in CNN

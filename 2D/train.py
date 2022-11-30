@@ -78,13 +78,13 @@ class Engine(Checkpointable):
         start_iter = self.epoch
         for i in range(start_iter, cfg.experiment.num_epochs):
             self.train()
-            if i % 2 == 0 and i > start_iter:
+            # if i % 2 == 0 and i > start_iter:
                 # self.validate()
                 # if self.check_values():
                 #     return
                 # self.render()
                 # self.eval_render() #? render img
-                self.save(best=False)
+                # self.save(best=False)
             self.epoch += 1
         self.eval_render()
 
