@@ -165,8 +165,6 @@ class Engine(Checkpointable):
             nerf_loss = ((gt_values - pred_colour) ** 2).mean()
             loss = nerf_loss
 
-            print(f"""nerf loss track: {loss}""")
-
             # optimize
             loss.backward()
             self.optimizer.step()
