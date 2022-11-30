@@ -350,7 +350,7 @@ class Engine(Checkpointable):
         with torch.no_grad():
             seed = 0
             # loop over objects
-            for i in tqdm(range(8)):
+            for i in tqdm(range(1)):
                 object_name, _ = self.valid_data.object_names[i]
                 imgs, matricies, params = self.valid_data.get_img(object_name, seed)
                 render_imgs = (
