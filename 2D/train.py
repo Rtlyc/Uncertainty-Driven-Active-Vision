@@ -87,7 +87,6 @@ class Engine(Checkpointable):
                 # self.save(best=False)
             self.epoch += 1
         self.eval_render()
-        print(self.optimizer.state_dict())
 
     def get_loaders(self):
 
@@ -168,8 +167,11 @@ class Engine(Checkpointable):
             loss = nerf_loss
 
             # optimize
+            print(f"pre parameters: {self.model.parameters()}")
             loss.backward()
             self.optimizer.step()
+            print(f"after parameters: {self.model.parameters()}")
+
 
             # log
             average_loss.append(loss.item())
