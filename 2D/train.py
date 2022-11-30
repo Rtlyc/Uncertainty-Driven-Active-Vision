@@ -167,10 +167,11 @@ class Engine(Checkpointable):
             loss = nerf_loss
 
             # optimize
-            print(f"pre parameters: {self.model.parameters()}")
             loss.backward()
             self.optimizer.step()
-            print(f"after parameters: {self.model.parameters()}")
+            for name, param in self.model.named_parameters():
+                if param.requires_grad:
+                    print (name, param.data)
 
 
             # log
