@@ -161,8 +161,8 @@ class Engine(Checkpointable):
                 num_images,
             )
             pred_colour = train_utils.nerf_rendering(pred_values, ray_masks)
-            print(f"pred: {pred_colour}")
-            print(f"gc: {gt_values}")
+            # print(f"pred: {pred_colour}")
+            # print(f"gc: {gt_values}")
 
             # loss
             nerf_loss = ((gt_values - pred_colour) ** 2).mean()
@@ -171,9 +171,10 @@ class Engine(Checkpointable):
             # optimize
             loss.backward()
             self.optimizer.step()
-            # for name, param in self.model.named_parameters():
-            #     if param.requires_grad:
-            #         print (name, param.data)
+            for name, param in self.model.named_parameters():
+                if param.requires_grad:
+                    print (name, param.data)
+                break
 
 
             # log
