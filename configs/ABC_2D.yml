@@ -9,7 +9,7 @@ experiment:
   randomseed: 42  # seed
   patience: 50 # how many epoch without improvement before stopping
   batch_size: 1 # batch size 16
-  num_epochs: 100 # number of epochs 1000
+  num_epochs: 10 # number of epochs 1000
 
 model:
   image_embedding: 64 # size of the image embedding from the CNN
@@ -21,7 +21,7 @@ model:
   initial_size: 16 # initial size of CNN channel in CNN
 
 optimizer:
-  lr: 0.0005 # learning rate
+  lr: 0.05 # learning rate 0.0005
 
 loss:
   num_rays: 32 # number of pixels to samples from each target image which training
