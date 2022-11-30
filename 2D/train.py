@@ -86,6 +86,7 @@ class Engine(Checkpointable):
                 # self.eval_render() #? render img
                 self.save(best=False)
             self.epoch += 1
+        self.eval_render()
 
     def get_loaders(self):
 
