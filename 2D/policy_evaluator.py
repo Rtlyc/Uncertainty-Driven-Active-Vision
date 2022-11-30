@@ -23,6 +23,35 @@ sys.path.insert(0, "../")
 from utils import CfgNode, train_utils, rendering, rays
 from models import occupancy_and_colour
 
+def get_location(n):
+    img_location = "../our_data/Test/"
+    params = np.load(img_location + f"P_{n}.npy", allow_pickle=True).item()
+    position = params["position"]
+    rotation = params["rotation"]
+    return position
+
+def get_data(n):
+    img_location = "../our_data/Test/"
+    input_image = data_loader.preprocess_toTensor(Image.open(img_location + f"{n}.png"))
+    # load image parameters
+    params = np.load(img_location + f"P_{n}.npy", allow_pickle=True).item()
+    position = params["position"]
+    rotation = params["rotation"]
+    params = torch.FloatTensor(np.concatenate((position, data_loader.rotation_to_quat(rotation))))
+    matrix = data_loader.matrix_from_params(position, rotation)
+    return input_image, params, matrix
+
+def get_surrounding_actions(n):
+    i =  n % 2
+    j = (n-i) // 2
+    actions = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+    ans = []
+    for di,dj in actions:
+        curi, curj = (i+di)%2, (j+dj)%4
+        ans.append(2*curj + curi)
+    return ans 
+
+
 
 class Engine(Checkpointable):
     def __init__(self, cfg, cfg_policy):
@@ -52,7 +81,7 @@ class Engine(Checkpointable):
     def __call__(self):
 
         # get datasert
-        self.get_loaders()
+        # self.get_loaders()
 
         # make model
         self.model = occupancy_and_colour.model(self.cfg)
@@ -60,7 +89,63 @@ class Engine(Checkpointable):
         self.load()
 
         self.renderer = rendering.Renderer([128, 128])
-        self.NBV()
+        # self.NBV()
+        self.our_moves()
+
+    def our_moves(self):
+        # TODO: pick our best actions within budgets
+        curid = 0
+        imgs = torch.zeros(1, self.cfg.NBV.budget, 3, 128, 128).cuda()
+        mats = torch.zeros(1, self.cfg.NBV.budget, 3, 4).cuda()
+        params = torch.zeros(1, self.cfg.NBV.budget, 7).cuda()
+        num_candidates = 4
+        visited = [curid]
+
+        for position in range(1, self.cfg.NBV.budget+1):
+            potential_ids = get_surrounding_actions(curid) # get our location based on cur position
+            curimg, curparam, curmatrix = get_data(curid)
+            locations = []
+            for temp_id in potential_ids:
+                locations.append(get_location(temp_id))
+
+            # TODO
+            embedding = self.model.image_to_embedding(imgs, position - 1)
+            occ_fun = lambda x: self.model.embedding_to_occ(
+                embedding, x.unsqueeze(0), mats, params, position - 1
+            )[0, ..., 0]
+            locations = torch.FloatTensor(locations).cuda()
+
+            # get uncertainty of each perspective
+            ray_points, ray_masks, dists = rays.get_rays(
+                self, locations, resolution=self.cfg_policy.candidate.resolution
+            )
+            uncertainties = train_utils.get_uncertainty(
+                                    self,
+                                    occ_fun,
+                                    num_candidates,
+                                    ray_points,
+                                    ray_masks,
+                                    dists,
+                                    self.cfg_policy.eval.chunk_size,
+                                    2) #position -2
+            
+            best_ind = uncertainties.mean(-1).argmax()
+            # orientation = self.renderer.cam_from_positions(location)
+
+            imgs[0, position - 1] = curimg
+            mats[0, position - 1] = curmatrix
+            params[0, position - 1] = curparam
+
+            curid = potential_ids[best_ind]
+            visited.append(curid)
+        
+        
+        #! render image based on selected actions
+            
+
+
+
+        
 
     def get_loaders(self):
         # evaluation dataloder
@@ -327,7 +412,7 @@ class Engine(Checkpointable):
         )[0, ..., 0]
         num_candidates = self.cfg_policy.candidate.num_candidates
 
-        # set random postions to consider
+        # set random postions to consider # TODO: use our action list postions
         locations = train_utils.get_locations_random(
             self, positions, self.seed, dist=self.cfg_policy.NBV.location_dist
         )
