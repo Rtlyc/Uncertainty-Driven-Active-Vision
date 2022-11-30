@@ -87,6 +87,7 @@ class Engine(Checkpointable):
                 # self.save(best=False)
             self.epoch += 1
         self.eval_render()
+        print(self.optimizer.state_dict())
 
     def get_loaders(self):
 
@@ -178,7 +179,6 @@ class Engine(Checkpointable):
                 tqdm.write(message)
         average_loss = np.array(average_loss).mean()
         self.writer.add_scalar("train/loss", average_loss, self.epoch)
-        print(self.optimizer.state_dict())
 
     def validate(self):
         self.model.eval()
