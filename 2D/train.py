@@ -83,7 +83,7 @@ class Engine(Checkpointable):
                 # if self.check_values():
                 #     return
                 # self.render()
-                self.eval_render()
+                # self.eval_render() #? render img
                 self.save(best=False)
             self.epoch += 1
 
@@ -164,6 +164,8 @@ class Engine(Checkpointable):
             # loss
             nerf_loss = ((gt_values - pred_colour) ** 2).mean()
             loss = nerf_loss
+
+            print(f"""nerf loss track: {loss}""")
 
             # optimize
             loss.backward()
