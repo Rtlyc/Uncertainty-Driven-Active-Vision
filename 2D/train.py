@@ -357,6 +357,7 @@ class Engine(Checkpointable):
                     .data.cpu()
                     .numpy()
                 )
+                print(f"""render_img size: {render_imgs.size()}""")
                 gt_colour = (
                     (rearrange(imgs[-1:], "b c w h -> w (b h) c") * 255)
                     .data.cpu()

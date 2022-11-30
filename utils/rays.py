@@ -154,7 +154,7 @@ def subsample_rays(self, ray_points, ray_masks, imgs, num_points, seed=None):
     ray_points = ray_points.view(bs, -1, 128, 3)
     ray_masks = ray_masks.view(bs, -1, 128)
 
-    print(f"bs myworld ray points:{ray_points}")
+    # print(f"bs myworld ray points:{ray_points}")
 
     i, p, m = [], [], []
     for j in range(bs):
@@ -163,7 +163,7 @@ def subsample_rays(self, ray_points, ray_masks, imgs, num_points, seed=None):
         idx = torch.randperm(imgs.shape[1])[:num_points]
         # idx = torch.randperm(2073600)[:num_points]
         # print(f"imgs.shape[1]:{imgs.shape[1]}")
-        print("ray_points tensor:", ray_points.size())
+        # print("ray_points tensor:", ray_points.size())
         i.append(imgs[j, idx])
         p.append(ray_points[j, idx])
         m.append(ray_masks[j, idx])
