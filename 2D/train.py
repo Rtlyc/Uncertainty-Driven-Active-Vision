@@ -407,7 +407,7 @@ class Engine(Checkpointable):
                 # print(pred_colours)
 
                 # save image of predictions
-                picture = np.zeros((2 * 128, 6 * 128, 3))
+                picture = np.zeros((2 * 128, 4 * 128, 3)) #? 6*128
                 picture[64 : 64 + 128, :128] = gt_colour
                 picture[:128, 128:] = render_imgs.clip(0, 255)
                 picture[128:, 128:] = pred_colours
