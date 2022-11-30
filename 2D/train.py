@@ -113,6 +113,7 @@ class Engine(Checkpointable):
         )
         self.valid_loader = valid_loader
         self.valid_data = valid_data
+        self.valid_data = train_data #! change valid data to train data
 
     # resume training
     def resume(self):
@@ -348,7 +349,7 @@ class Engine(Checkpointable):
         with torch.no_grad():
             seed = 0
             # loop over objects
-            for i in tqdm(range(10)):
+            for i in tqdm(range(8)):
                 object_name, _ = self.valid_data.object_names[i]
                 imgs, matricies, params = self.valid_data.get_img(object_name, seed)
                 render_imgs = (
@@ -402,12 +403,12 @@ class Engine(Checkpointable):
                 colour = colour.data.cpu().numpy()
                 pred_colours = (colour * 255).astype(np.uint8)
 
-                print(pred_colours)
+                # print(pred_colours)
 
                 # save image of predictions
                 picture = np.zeros((2 * 128, 6 * 128, 3))
                 picture[64 : 64 + 128, :128] = gt_colour
-                # picture[:128, 128:] = render_imgs.clip(0, 255)
+                picture[:128, 128:] = render_imgs.clip(0, 255)
                 picture[128:, 128:] = pred_colours
                 picture = picture.astype(np.uint8)
                 Image.fromarray(picture).save(location + f"{i}.png")
