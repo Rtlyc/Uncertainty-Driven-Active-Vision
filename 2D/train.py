@@ -176,6 +176,7 @@ class Engine(Checkpointable):
             # print(list(self.model.parameters())[0].clone().grad)
             # optimize
             loss.retain_grad()
+            print(list(self.model.parameters())[0].clone().grad)
             loss.backward()
             self.optimizer.step()
             
