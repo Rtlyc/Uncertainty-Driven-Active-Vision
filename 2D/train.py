@@ -61,6 +61,8 @@ class Engine(Checkpointable):
 
         # optimizer
         params = list(self.model.parameters())
+        for p in params:
+            print(p)
 
         self.optimizer = optim.Adam(params, lr=self.cfg.optimizer.lr, weight_decay=0)
 
@@ -175,8 +177,7 @@ class Engine(Checkpointable):
 
             # print(list(self.model.parameters())[0].clone().grad)
             # optimize
-            loss.retain_grad()
-            print(list(self.model.parameters())[0].clone().grad)
+            # loss.retain_grad()
             loss.backward()
             self.optimizer.step()
             
