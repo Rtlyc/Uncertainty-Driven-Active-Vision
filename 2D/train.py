@@ -60,7 +60,7 @@ class Engine(Checkpointable):
         self.model.cuda()
 
         # optimizer
-        # params = list(self.model.parameters())
+        params = list(self.model.parameters())
         # for p in params:
         #     print(p)
 
