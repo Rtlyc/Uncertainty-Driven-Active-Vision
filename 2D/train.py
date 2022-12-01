@@ -182,8 +182,8 @@ class Engine(Checkpointable):
             self.optimizer.step()
 
             params = list(self.model.parameters())
-            for p in params:
-                print(p.grad)
+            # for p in params:
+            #     print(p.grad)
             
             # for name, param in self.model.named_parameters():
             #     if param.requires_grad:
