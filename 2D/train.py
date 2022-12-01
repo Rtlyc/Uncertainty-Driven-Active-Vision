@@ -61,8 +61,6 @@ class Engine(Checkpointable):
 
         # optimizer
         params = list(self.model.parameters())
-        print("param:")
-        print(list(self.model.parameters())[0].clone().grad)
 
         self.optimizer = optim.Adam(params, lr=self.cfg.optimizer.lr, weight_decay=0)
 
@@ -170,6 +168,10 @@ class Engine(Checkpointable):
             # loss
             nerf_loss = ((gt_values - pred_colour) ** 2).mean()
             loss = nerf_loss
+
+            for parameter in list(self.model.parameters()):
+                parameter.retain_grad()
+                print(parameter.clone().grad)
 
             # print(list(self.model.parameters())[0].clone().grad)
             # optimize
