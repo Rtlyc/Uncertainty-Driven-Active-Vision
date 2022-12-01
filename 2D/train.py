@@ -168,10 +168,12 @@ class Engine(Checkpointable):
             nerf_loss = ((gt_values - pred_colour) ** 2).mean()
             loss = nerf_loss
 
-            print(list(self.model.parameters())[0].clone().grad)
+            # print(list(self.model.parameters())[0].clone().grad)
             # optimize
             loss.backward()
+            print(list(self.model.parameters())[0].clone().grad)
             self.optimizer.step()
+            
             # for name, param in self.model.named_parameters():
             #     if param.requires_grad:
             #         print (name, param.data)
