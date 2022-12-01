@@ -60,9 +60,9 @@ class Engine(Checkpointable):
         self.model.cuda()
 
         # optimizer
-        params = list(self.model.parameters())
-        for p in params:
-            print(p)
+        # params = list(self.model.parameters())
+        # for p in params:
+        #     print(p)
 
         self.optimizer = optim.Adam(params, lr=self.cfg.optimizer.lr, weight_decay=0)
 
@@ -177,9 +177,13 @@ class Engine(Checkpointable):
 
             # print(list(self.model.parameters())[0].clone().grad)
             # optimize
-            # loss.retain_grad()
+            loss.retain_grad()
             loss.backward()
             self.optimizer.step()
+
+            params = list(self.model.parameters())
+            for p in params:
+                print(p)
             
             # for name, param in self.model.named_parameters():
             #     if param.requires_grad:
