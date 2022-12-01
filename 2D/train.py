@@ -183,7 +183,7 @@ class Engine(Checkpointable):
 
             params = list(self.model.parameters())
             for p in params:
-                print(p)
+                print(p.grad)
             
             # for name, param in self.model.named_parameters():
             #     if param.requires_grad:
