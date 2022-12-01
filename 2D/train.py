@@ -177,13 +177,13 @@ class Engine(Checkpointable):
 
             # print(list(self.model.parameters())[0].clone().grad)
             # optimize
-            loss.retain_grad()
+            # loss.retain_grad()
             loss.backward()
             self.optimizer.step()
 
             params = list(self.model.parameters())
-            # for p in params:
-            #     print(p.grad)
+            for p in params:
+                print(p.grad)
             
             # for name, param in self.model.named_parameters():
             #     if param.requires_grad:
