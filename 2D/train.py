@@ -163,8 +163,9 @@ class Engine(Checkpointable):
                 output_params,
                 num_images,
             )
+            #! must be model is not working!!! 
             pred_colour = train_utils.nerf_rendering(pred_values, ray_masks)
-            # print(f"pred: {pred_colour}")
+            print(f"pred: {pred_colour}")
             # print(f"gc: {gt_values}")
 
             # loss
@@ -181,9 +182,9 @@ class Engine(Checkpointable):
             loss.backward()
             self.optimizer.step()
 
-            params = list(self.model.parameters())
-            for p in params:
-                print(p.grad)
+            # params = list(self.model.parameters())
+            # for p in params:
+            #     print(p.grad)
             
             # for name, param in self.model.named_parameters():
             #     if param.requires_grad:
