@@ -148,7 +148,7 @@ class Engine(Checkpointable):
             output_imgs = batch["imgs"][:, -1].cuda()
             output_params = batch["params"][:, -1].cuda()
 
-            print(f"object name: {batch['names']}")
+            # print(f"object name: {batch['names']}")
 
             # get ray values for volume rendering and sumsample for training
             ray_points, ray_masks, _ = rays.get_rays(self, output_params[:, :3])
