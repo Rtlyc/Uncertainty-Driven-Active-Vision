@@ -36,6 +36,7 @@ class data(object):
         if args.limit_data:
             object_names = object_names[:1000]
 
+        print(object_names)
         for i, n in enumerate(tqdm(object_names)):
             if os.path.exists(VOXEL_LOCATION + n + ".npy"):
                 if set_type == "train" and int(n) < 800: #? 23000
