@@ -165,7 +165,6 @@ class Engine(Checkpointable):
             )
             #! must be model is not working!!! 
             pred_colour = train_utils.nerf_rendering(pred_values, ray_masks)
-            print(f"pred: {pred_colour}")
             # print(f"gc: {gt_values}")
 
             # loss
@@ -198,6 +197,7 @@ class Engine(Checkpointable):
                 message = f"Train || Epoch: {self.epoch}, mse: {nerf_loss.item():.5f} "
                 message += f"  || best_loss:  {self.best_loss :.5f}"
                 tqdm.write(message)
+                print(f"pred: {pred_colour}")
         average_loss = np.array(average_loss).mean()
         self.writer.add_scalar("train/loss", average_loss, self.epoch)
 
