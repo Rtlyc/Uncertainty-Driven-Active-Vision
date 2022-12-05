@@ -16,6 +16,7 @@ import trimesh
 from PIL import Image
 from scipy.spatial.transform import Rotation as R
 import math
+from einops import rearrange
 
 
 import sys
@@ -23,6 +24,7 @@ sys.path.insert(0, "../")
 from utils import CfgNode, train_utils, rendering, rays
 from models import occupancy_and_colour
 
+DEBUG = True
 
 class Engine(Checkpointable):
     def __init__(self, cfg, cfg_policy):
@@ -109,17 +111,21 @@ class Engine(Checkpointable):
         self.model.eval()
 
         total_loss = []
-        for i in tqdm(range(len(self.valid_data.object_names))):
+        # for i in tqdm(range(len(self.valid_data.object_names))):
+        for i in tqdm(range(1)): #? only use one object
 
             # load the object
             obj = self.valid_data.object_names[i][0]
             self.object_name = self.valid_data.obj_location + f"{obj}.obj"
+            # self.object_name = "our_mesh/luomo.obj" #? hardcode obj path
             mesh = trimesh.load(self.object_name)
+            scale = 0.013 #? hardcode scale
+            # mesh.apply_scale([scale, scale, scale]) #? hardcode scale
             self.renderer.remove_objects()
             self.renderer.add_object(mesh)
 
             # get gt info
-            self.get_gt_occ(obj, i)
+            self.get_gt_occ(obj, i) #? not used voxel info for now
             self.get_gt_colours(i)
 
             obj_loss = []
@@ -174,6 +180,26 @@ class Engine(Checkpointable):
                 imgs, mats, params, positions, j, seed
             )
             policy_loss.append(loss)
+        #! output images and positions
+        output_dir = f"our_output_{seed}"
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        for i in range(imgs.shape[1]):
+            name = str(i).zfill(3)
+            image = imgs[0][i]
+            image = (rearrange(image, "c w h -> w h c") * 255).data.cpu().numpy()
+            image = Image.fromarray(image.astype(np.uint8))
+            img_name = f"{name}.png"
+            image.save(os.path.join(output_dir, img_name))
+
+            d = {}
+            d['position'] = np.array(params[0][i][0:3].cpu().numpy())
+            d['rotation'] = np.array(params[0][i][3:].cpu().numpy())
+            npy_name = f"P_{name}.npy"
+            np.save(os.path.join(output_dir, npy_name), d)
+
+
+
         return policy_loss
 
     # eval the current inputs
@@ -212,6 +238,7 @@ class Engine(Checkpointable):
             if psnr == 0 or math.isnan(psnr) or math.isinf(psnr):
                 psnr = 5.0
 
+            '''
             # get iou
             fun = lambda x: torch.sigmoid(
                 self.model.embedding_to_occ(embedding, x, mats, params, position)
@@ -236,6 +263,9 @@ class Engine(Checkpointable):
             )
             if iou == 0 or math.isnan(iou) or math.isinf(iou):
                 iou = 0.01
+
+            '''
+            iou = 0.0 #? DO Not use iou for now
             loss = [psnr, iou]
 
         return loss
@@ -248,6 +278,10 @@ class Engine(Checkpointable):
             with torch.no_grad():
                 return self.random_policy(imgs, mats, params, positions, position, seed)
 
+        elif True:
+            with torch.no_grad():
+                return self.trajectory_policy(imgs, mats, params, positions, position, seed)
+        
         # using the even or odd policy
         elif (
             "even" in self.cfg_policy.NBV.policy or "odd" in self.cfg_policy.NBV.policy
@@ -321,6 +355,12 @@ class Engine(Checkpointable):
         # get embedding for current images
         embedding = self.model.image_to_embedding(imgs, position - 1)
 
+        print("under candidate policy")
+        print("embedding: ", embedding)
+        print("params shape: ", params.shape)
+        print("imgs shape: ", imgs.shape)
+        print("mats shape: ", mats.shape)
+
         # define function from
         occ_fun = lambda x: self.model.embedding_to_occ(
             embedding, x.unsqueeze(0), mats, params, position - 1
@@ -331,6 +371,29 @@ class Engine(Checkpointable):
         locations = train_utils.get_locations_random(
             self, positions, self.seed, dist=self.cfg_policy.NBV.location_dist
         )
+
+        #!: change locations to be a list of 10 locations 
+        locations = [[ 0.1604,  0.7072,  0.3377],
+        [ 0.2104, -0.3579,  0.6839],
+        [-0.0818,  0.5136,  0.6079],
+        [-0.2956,  0.7398,  0.0733],
+        [ 0.0895,  0.5599, -0.5643],
+        [ 0.3342,  0.4446,  0.5750],
+        [ 0.5810, -0.0748,  0.5448],
+        [-0.5647,  0.2070, -0.5276],
+        [ 0.7847,  0.0386, -0.1506],
+        [-0.5173,  0.6026, -0.0963],
+        [ 0.1095, -0.7698,  0.1882],
+        [ 0.1898,  0.1980,  0.7515],
+        [ 0.6105, -0.4718, -0.2114],
+        [ 0.3099, -0.6896,  0.2615],
+        [ 0.2726, -0.4627, -0.5929],
+        [-0.0776,  0.6173, -0.5030],
+        [-0.5531, -0.0755, -0.5730],
+        [ 0.4168, -0.5232,  0.4388],
+        [-0.5167,  0.6095, -0.0401],
+        [ 0.7016,  0.1543,  0.3521]]
+
         locations = torch.FloatTensor(locations).cuda()
 
         # get uncertainty of each perspective
@@ -353,9 +416,71 @@ class Engine(Checkpointable):
         location = locations[best_position].data.cpu().numpy()
         orientation = self.renderer.cam_from_positions(location)
 
+        # ? print the info
+        print(f"potential locations: {locations}")
+        print(f"uncertainties: {uncertainties}")
+        print(f"uncertainties shape: {uncertainties.shape}")
+        print(f"best location: {location}")
+        print()
+
         return self.update_and_eval(
             location, orientation, imgs, mats, params, positions, position
         )
+
+    def trajectory_policy(self, imgs, mats, params, positions, position, seed=None):
+        # get embedding for current images
+        embedding = self.model.image_to_embedding(imgs, position - 1)
+
+        # define function from
+        occ_fun = lambda x: self.model.embedding_to_occ(
+            embedding, x.unsqueeze(0), mats, params, position - 1
+        )[0, ..., 0]
+        num_candidates = self.cfg_policy.candidate.num_candidates
+
+        # set random trajectory to consider
+        current_position = [0,0,0.8] #TODO: change this to be the current position
+        if positions:
+            current_position = positions[-1]
+        trajectory_list = train_utils.get_random_delta_positions(self, current_position, radius=0.8, num=num_candidates, seed=0, dist=(0.1, 0.4))
+        if DEBUG: print(f"trajectory_list: {trajectory_list}")
+
+        # evaluate each trajectory
+        trajectory_values = []
+        sample_num = 5
+        for delta_position in trajectory_list:
+            sample_points = train_utils.sample_trajectory(self, current_position, delta_position, radius=0.8, sample_num=sample_num, seed=0)
+            if DEBUG: print(f"sample_points: {sample_points}")
+
+            ray_points, ray_masks, dists = rays.get_rays(
+                self, sample_points, resolution=self.cfg_policy.candidate.resolution
+            )
+            uncertainties = train_utils.get_uncertainty(
+                self,
+                occ_fun,
+                sample_num,
+                ray_points,
+                ray_masks,
+                dists,
+                self.cfg_policy.eval.chunk_size,
+                position - 2,
+            )
+            trajectory_values.append(uncertainties.mean(-1).mean())
+        trajectory_values = torch.tensor(trajectory_values)
+        if DEBUG: print(f"trajectory_values: {trajectory_values}")
+
+
+        # select trajectory with highest uncertainty
+        best_index = torch.argmax(trajectory_values).item()
+        best_delta_position = trajectory_list[best_index]
+        if DEBUG: print(f"best_delta_position: {best_delta_position}")
+        best_position = np.array(current_position) + np.array(best_delta_position)
+        if DEBUG: print(f"best_position: {best_position}")
+        orientation = self.renderer.cam_from_positions(best_position)
+        
+        return self.update_and_eval(
+            best_position, orientation, imgs, mats, params, positions, position
+        )
+
 
     def gradient_policy(self, imgs, mats, params, positions, position, seed=None):
 

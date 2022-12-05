@@ -12,10 +12,12 @@ from scipy.spatial.transform import Rotation as R
 from PIL import Image
 
 
+IMAGE_LOCATION = "../luomo/"
 IMAGE_LOCATION = "../data/images/"
 VOXEL_LOCATION = "../data/voxels/"
 OBJ_LOCATION = "../data/objects/"
 NUM_IMAGES = 25
+NUM_IMAGES = 6
 
 
 class data(object):
@@ -24,6 +26,7 @@ class data(object):
         self.args = args
         self.set_type = set_type
         object_names = np.load("../utils/obj_names.npy")
+        object_names = [str(i) for i in range(80)]
         self.obj_location = OBJ_LOCATION
         self.training = set_type == "train"
         self.object_names = []
@@ -32,17 +35,19 @@ class data(object):
 
         # set seed
         random.seed(1)
-        random.shuffle(object_names)
+        # random.shuffle(object_names) #?
         if args.limit_data:
             object_names = object_names[:1000]
 
+        # print(object_names)
         for i, n in enumerate(tqdm(object_names)):
-            if os.path.exists(VOXEL_LOCATION + n + ".npy"):
-                if set_type == "train" and int(n) < 23000:
+            # if os.path.exists(VOXEL_LOCATION + n + ".npy"):
+            if True:
+                if set_type == "train" and int(n) < 80: #? 23000
                     self.object_names.append([n, None])
-                if set_type == "valid" and int(n) >= 23000 and int(n) < 24500:
+                if set_type == "valid" and int(n) >= 60 and int(n) < 70: #? 23000, 24500
                     self.object_names.append([n, i])
-                if set_type == "test" and int(n) >= 24500:
+                if set_type == "test" and int(n) >= 70: #? 24500
                     self.object_names.append([n, i])
         print(f"The number of {set_type} set objects found : {len(self.object_names)}")
 
@@ -77,7 +82,7 @@ class data(object):
 
     # get images from dataset
     def get_img(self, obj, seed):
-        img_location = IMAGE_LOCATION + f"/{obj}/"
+        img_location = IMAGE_LOCATION + f"{obj}/"
         if seed is not None:
             imgs_nums = np.random.RandomState(seed=seed).choice(
                 np.arange(NUM_IMAGES), self.args.NBV.budget + 1, replace=False
@@ -142,6 +147,7 @@ class data(object):
             positions, values = self.get_voxels(object_name, seed, num_points)
             values = torch.FloatTensor(values)
             positions = torch.FloatTensor(positions)
+            print("hello")
         else:
             positions, values = None, None
 

@@ -6,7 +6,7 @@ NBV:
   exp_name: test # experiment name
   inst_name: test # name of instance in experiment
   policy: candidate # the policy being evaluated, chosen from : random , even, odd, gradient, candidate
-  budget: 5 # how many input images to consider
+  budget: 10 # how many input images to consider
   location_dist: .7 # how far apart view must be at minimum
 
 uncert:
@@ -17,7 +17,7 @@ uncert:
   sil_pow: .5 # exponential to silhouette uncertainty
 
 candidate:
-  num_candidates: 20 # number of candidates considered
+  num_candidates: 25 # number of candidates considered
   resolution: 32 # resolution of uncertainty image computed
 
 grad:
@@ -31,9 +31,9 @@ base:
   config: ../configs/ABC_2D_Pretrained.yml # the config file of the reconstruction model chosen
 
 eval:
-  num_initialization: 2 # number of evaluations per object
+  num_initialization: 1 # number of evaluations per object
   chunk_size: 5000 # number of points processed at a time
   num_points_iou: 1000 # number of points samples for iou evaluation
   num_rays_per_img: 200 # number fo pixels sampled from each target image for evaluation
-  num_imgs: 20 # number of target images evaluated
+  num_imgs: 6 # number of target images evaluated
 

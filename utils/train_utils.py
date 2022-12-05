@@ -59,6 +59,45 @@ def get_locations_random(self, positions, seed, dist=0.7):
     else:
         return get_locations_random(self, positions, seed, dist=dist -.1)
 
+# get a random camera position from current position with a distance limit
+def get_random_delta_positions(self, current_position, radius, num, seed, dist=(0.1, 0.4)):
+    '''
+    :param current_position: current camera position
+    :param radius: radius of the sphere
+    :param num: number of samples
+    :param seed: random seed
+    :param dist: distance limit
+    :return: random camera delta positions
+    '''
+    near, far = dist
+    current_position = torch.FloatTensor(current_position).cuda().unsqueeze(0)
+    def possible_positions(current_position, radius, num, seed):
+        positions = torch.FloatTensor(
+            self.renderer.random_position(radius, num=1000, seed=seed)).cuda()
+        diff = (((positions - current_position) ** 2).sum(-1))
+        positions = positions[(diff > near) & (diff < far)][:num]
+        if positions.shape[0] == num:
+            return positions
+        return possible_positions(current_position, radius, num, seed + 1)
+
+    positions = possible_positions(current_position, radius, num, seed)
+    delta_positions = positions - current_position
+    return delta_positions.data.cpu().numpy()        
+
+def sample_trajectory(self, current_position, delta_position, radius, sample_num, seed):
+    '''
+    :param current_position: current camera position
+    :param delta_position: delta camera position
+    :param sample_num: number of samples
+    :param seed: random seed
+    :return: sampled camera positions
+    '''
+    positions = []
+    for i in range(1, sample_num+1):
+        target = current_position + delta_position * (i / (sample_num))
+        target = target / np.linalg.norm(target) * radius
+        positions.append(target)
+    return torch.FloatTensor(np.array(positions)).cuda()
 
 # get the uncertainty from occupancy and perspective ray information
 def get_uncertainty(self, occ_fun, checks, ray_points, ray_masks, dists, chunk_size, position):
@@ -86,6 +125,7 @@ def get_uncertainty(self, occ_fun, checks, ray_points, ray_masks, dists, chunk_s
     dists = dists.view(checks, -1, 128 )
 
     # compute direcitonal derivative
+    position %= 4 #? make sure position is in range 4
     if self.cfg_policy.uncert.dir_dir[position] > 0:
         dir = torch.abs(value[:, :, :-2] - value[:, :, 2:])
         dir_value = (1 - ((dir + 1e-8) ** self.cfg_policy.uncert.dir_dir[position]))

@@ -79,7 +79,7 @@ class Engine(Checkpointable):
         for i in range(start_iter, cfg.experiment.num_epochs):
             self.train()
             if i % 2 == 0 and i > start_iter:
-                self.validate()
+                # self.validate()
                 if self.check_values():
                     return
                 self.render()
@@ -90,7 +90,23 @@ class Engine(Checkpointable):
 
         # training dataloader
         train_data = data_loader.data(self.cfg, set_type="train")
-        train_data[0]
+        data0 = train_data[0]
+        r'''
+        data = {
+            "imgs": imgs,
+            "names": object_name,
+            "matricies": matricies,
+            "params": params,
+            "positions": positions,
+            "gt_values": values,
+        }
+        '''
+        imgs = data0['imgs']
+        matricies = data0['matricies']
+        cam_params = data0['params']
+        print(f"imgs size: {imgs.size()}, content: \n{imgs}")
+        print(f"matricies size: {matricies.size()} content: \n{matricies}")
+        print(f"cam_params size: {cam_params.size()} content: \n{cam_params}")
         train_loader = DataLoader(
             train_data,
             batch_size=self.cfg.experiment.batch_size,
@@ -175,6 +191,7 @@ class Engine(Checkpointable):
                 message += f"  || best_loss:  {self.best_loss :.5f}"
                 tqdm.write(message)
         average_loss = np.array(average_loss).mean()
+        self.current_loss = average_loss
         self.writer.add_scalar("train/loss", average_loss, self.epoch)
 
     def validate(self):
@@ -242,12 +259,12 @@ class Engine(Checkpointable):
                     ).mean()
                     iou_total[j - 1] += loss_iou.item()
 
-            # logs
-            loss_total = np.array(loss_total) / float(k + 1)
-            iou_total = np.array(iou_total) / float(k + 1)
-            message = f"Validation Total || Epoch: {self.epoch}, mse: {loss_total}, iou: {iou_total}"
-            message += f" || best loss:  {self.best_loss :.5f}"
-            tqdm.write(message)
+                # logs
+                loss_total = np.array(loss_total) / float(k + 1)
+                iou_total = np.array(iou_total) / float(k + 1)
+                message = f"Validation Total || Epoch: {self.epoch}, mse: {loss_total}, iou: {iou_total}"
+                message += f" || best loss:  {self.best_loss :.5f}"
+                tqdm.write(message)
 
             if not np.isinf(np.array(loss_total).mean()):
                 for j in range(self.cfg.NBV.budget):
