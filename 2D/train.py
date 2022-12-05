@@ -242,12 +242,12 @@ class Engine(Checkpointable):
                     ).mean()
                     iou_total[j - 1] += loss_iou.item()
 
-            # logs
-            loss_total = np.array(loss_total) / float(k + 1)
-            iou_total = np.array(iou_total) / float(k + 1)
-            message = f"Validation Total || Epoch: {self.epoch}, mse: {loss_total}, iou: {iou_total}"
-            message += f" || best loss:  {self.best_loss :.5f}"
-            tqdm.write(message)
+                # logs
+                loss_total = np.array(loss_total) / float(k + 1)
+                iou_total = np.array(iou_total) / float(k + 1)
+                message = f"Validation Total || Epoch: {self.epoch}, mse: {loss_total}, iou: {iou_total}"
+                message += f" || best loss:  {self.best_loss :.5f}"
+                tqdm.write(message)
 
             if not np.isinf(np.array(loss_total).mean()):
                 for j in range(self.cfg.NBV.budget):
