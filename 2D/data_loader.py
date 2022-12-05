@@ -39,12 +39,11 @@ class data(object):
         print(object_names)
         for i, n in enumerate(tqdm(object_names)):
             if os.path.exists(VOXEL_LOCATION + n + ".npy"):
-                print("*1"*10)
                 if set_type == "train" and int(n) < 800: #? 23000
                     self.object_names.append([n, None])
-                if set_type == "valid" and int(n) >= 800 and int(n) < 900: #? 23000, 24500
+                if set_type == "valid" and int(n) >= 600 and int(n) < 700: #? 23000, 24500
                     self.object_names.append([n, i])
-                if set_type == "test" and int(n) >= 900: #? 24500
+                if set_type == "test" and int(n) >= 700: #? 24500
                     self.object_names.append([n, i])
         print(f"The number of {set_type} set objects found : {len(self.object_names)}")
 
