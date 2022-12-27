@@ -17,6 +17,7 @@ IMAGE_LOCATION = "../car_data/"
 VOXEL_LOCATION = "../data/voxels/"
 OBJ_LOCATION = "../data/objects/"
 NUM_IMAGES = 25
+NUM_IMAGES = 6
 
 
 class data(object):
