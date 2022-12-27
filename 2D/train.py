@@ -90,7 +90,20 @@ class Engine(Checkpointable):
 
         # training dataloader
         train_data = data_loader.data(self.cfg, set_type="train")
-        imgs, matricies, cam_params = train_data[0]
+        data0 = train_data[0]
+        r'''
+        data = {
+            "imgs": imgs,
+            "names": object_name,
+            "matricies": matricies,
+            "params": params,
+            "positions": positions,
+            "gt_values": values,
+        }
+        '''
+        imgs = data0['imgs']
+        matricies = data0['matricies']
+        cam_params = data0['params']
         print(f"imgs size: {imgs.size}, content: \n{imgs}")
         print(f"matricies size: {matricies.size} content: \n{matricies}")
         print(f"cam_params size: {cam_params.size} content: \n{cam_params}")
