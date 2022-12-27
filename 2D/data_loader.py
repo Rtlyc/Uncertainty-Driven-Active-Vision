@@ -144,6 +144,7 @@ class data(object):
             positions, values = self.get_voxels(object_name, seed, num_points)
             values = torch.FloatTensor(values)
             positions = torch.FloatTensor(positions)
+            print("hello")
         else:
             positions, values = None, None
 
