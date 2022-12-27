@@ -40,7 +40,6 @@ class data(object):
         # print(object_names)
         for i, n in enumerate(tqdm(object_names)):
             if os.path.exists(VOXEL_LOCATION + n + ".npy"):
-                print(f"{i}:names:{n}, hello")
                 if set_type == "train" and int(n) < 80: #? 23000
                     self.object_names.append([n, None])
                 if set_type == "valid" and int(n) >= 60 and int(n) < 70: #? 23000, 24500
@@ -80,7 +79,7 @@ class data(object):
 
     # get images from dataset
     def get_img(self, obj, seed):
-        img_location = IMAGE_LOCATION + f"/{obj}/"
+        img_location = IMAGE_LOCATION + f"{obj}/"
         if seed is not None:
             imgs_nums = np.random.RandomState(seed=seed).choice(
                 np.arange(NUM_IMAGES), self.args.NBV.budget + 1, replace=False
