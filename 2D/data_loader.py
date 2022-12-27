@@ -39,7 +39,8 @@ class data(object):
 
         # print(object_names)
         for i, n in enumerate(tqdm(object_names)):
-            if os.path.exists(VOXEL_LOCATION + n + ".npy"):
+            # if os.path.exists(VOXEL_LOCATION + n + ".npy"):
+            if True:
                 if set_type == "train" and int(n) < 80: #? 23000
                     self.object_names.append([n, None])
                 if set_type == "valid" and int(n) >= 60 and int(n) < 70: #? 23000, 24500
