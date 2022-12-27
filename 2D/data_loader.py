@@ -24,6 +24,7 @@ class data(object):
         self.args = args
         self.set_type = set_type
         object_names = np.load("../utils/obj_names.npy")
+        object_names = [str(i) for i in range(80)]
         self.obj_location = OBJ_LOCATION
         self.training = set_type == "train"
         self.object_names = []
@@ -39,11 +40,11 @@ class data(object):
         # print(object_names)
         for i, n in enumerate(tqdm(object_names)):
             if os.path.exists(VOXEL_LOCATION + n + ".npy"):
-                if set_type == "train" and int(n) < 800: #? 23000
+                if set_type == "train" and int(n) < 80: #? 23000
                     self.object_names.append([n, None])
-                if set_type == "valid" and int(n) >= 600 and int(n) < 700: #? 23000, 24500
+                if set_type == "valid" and int(n) >= 60 and int(n) < 70: #? 23000, 24500
                     self.object_names.append([n, i])
-                if set_type == "test" and int(n) >= 700: #? 24500
+                if set_type == "test" and int(n) >= 70: #? 24500
                     self.object_names.append([n, i])
         print(f"The number of {set_type} set objects found : {len(self.object_names)}")
 
