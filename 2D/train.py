@@ -104,9 +104,9 @@ class Engine(Checkpointable):
         imgs = data0['imgs']
         matricies = data0['matricies']
         cam_params = data0['params']
-        print(f"imgs size: {imgs.size}, content: \n{imgs}")
-        print(f"matricies size: {matricies.size} content: \n{matricies}")
-        print(f"cam_params size: {cam_params.size} content: \n{cam_params}")
+        print(f"imgs size: {imgs.size()}, content: \n{imgs}")
+        print(f"matricies size: {matricies.size()} content: \n{matricies}")
+        print(f"cam_params size: {cam_params.size()} content: \n{cam_params}")
         train_loader = DataLoader(
             train_data,
             batch_size=self.cfg.experiment.batch_size,
