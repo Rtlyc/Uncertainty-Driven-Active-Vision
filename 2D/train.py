@@ -79,7 +79,7 @@ class Engine(Checkpointable):
         for i in range(start_iter, cfg.experiment.num_epochs):
             self.train()
             if i % 2 == 0 and i > start_iter:
-                self.validate()
+                # self.validate()
                 if self.check_values():
                     return
                 self.render()
@@ -175,6 +175,7 @@ class Engine(Checkpointable):
                 message += f"  || best_loss:  {self.best_loss :.5f}"
                 tqdm.write(message)
         average_loss = np.array(average_loss).mean()
+        self.current_loss = average_loss
         self.writer.add_scalar("train/loss", average_loss, self.epoch)
 
     def validate(self):
