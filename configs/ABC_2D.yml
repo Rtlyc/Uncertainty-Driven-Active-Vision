@@ -7,7 +7,7 @@ experiment:
   id: test # name of the instance in the experiment
   logdir: logs # location of logs
   randomseed: 42  # seed
-  patience: 50 # how many epoch without improvement before stopping
+  patience: 500 # how many epoch without improvement before stopping
   batch_size: 16 # batch size
   num_epochs: 1000 # number of epochs 1000
 
