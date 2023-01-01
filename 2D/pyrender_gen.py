@@ -68,9 +68,9 @@ for y_rot in range(y):
         mat_rot = np.dot(y_mat_rot, x_mat_rot)
         if DEBUG: print(f"Rotation matrix: {mat_rot}")
         camera_vec = np.array([0, 0, r])
-        camera_rot = np.array([0, 0, 0, 1])
         camera_vec = np.dot(mat_rot, camera_vec)
-        camera_rot = R.from_matrix(mat_rot).as_euler("xyz", degrees=True)
+        camera_rot = R.from_matrix(mat_rot)
+        camera_rot = camera_rot.as_euler("xyz", degrees=True)
         if DEBUG: 
             print(f"Camera position: {camera_vec}")
             print(f"Camera rotation: {camera_rot}")
