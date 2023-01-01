@@ -36,7 +36,7 @@ scale = 0.013
 mesh.apply_scale([scale, scale, scale])
 
 # Create a renderer and add the mesh
-renderer = pyrender.Renderer([128, 128])
+renderer = rendering.Renderer([128, 128])
 renderer.add_object(mesh,  add_faces=True)
 
 # Define the range of y and x rotations
