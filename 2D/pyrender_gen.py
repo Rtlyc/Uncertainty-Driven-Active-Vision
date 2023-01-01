@@ -13,7 +13,7 @@ mesh = trimesh.load(object_path)
 renderer.remove_objects()
 renderer.add_object(mesh, add_faces=True)
 
-location = renderer.random_position(radius=10, num=1, seed=0)
+location = renderer.random_position(radius=5, num=1, seed=0)
 orientation = renderer.cam_from_positions(location)
 renderer.update_camera_pose(location, orientation)
 image = Image.fromarray(renderer.render())
