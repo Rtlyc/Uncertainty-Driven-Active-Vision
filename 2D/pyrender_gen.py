@@ -11,7 +11,7 @@ renderer = rendering.Renderer([128, 128])
 # load the object
 object_path = "our_mesh/luomo.obj"
 mesh = trimesh.load(object_path)
-scale = 0.02
+scale = 0.01
 mesh.apply_scale([scale, scale, scale]) 
 renderer.remove_objects()
 renderer.add_object(mesh,  add_faces=True)
