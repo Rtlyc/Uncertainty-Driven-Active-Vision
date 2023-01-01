@@ -28,6 +28,7 @@ import numpy as np
 import trimesh
 import numpy as np
 import math
+from scipy.spatial.transform import Rotation as R
 
 # Load the mesh and scale it
 object_path = "our_mesh/luomo.obj"
@@ -68,6 +69,7 @@ for y_rot in range(y):
         camera_rot = np.array([0, 0, 0, 1])
         camera_vec = np.dot(mat_rot, camera_vec)
         camera_rot = np.dot(mat_rot, camera_rot)
+        camera_rot = R.from_matrix(mat_rot).as_quat()
 
         renderer.update_camera_pose(camera_vec, camera_rot)
 
