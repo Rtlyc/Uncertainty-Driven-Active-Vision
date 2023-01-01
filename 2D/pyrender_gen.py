@@ -30,7 +30,7 @@ import numpy as np
 import math
 from scipy.spatial.transform import Rotation as R
 
-DEBUG = False
+DEBUG = True
 
 # Load the mesh and scale it
 object_path = "our_mesh/luomo.obj"
