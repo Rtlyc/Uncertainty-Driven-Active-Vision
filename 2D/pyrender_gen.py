@@ -63,6 +63,7 @@ for y_rot in range(y):
             [0, np.sin(np.deg2rad(theta * x_rot)), np.cos(np.deg2rad(theta * x_rot))]])
 
         mat_rot = np.dot(y_mat_rot, x_mat_rot)
+        print(mat_rot)
         camera_vec = np.array([0, 0, r])
         camera_rot = np.array([0, 0, 0, 1])
         camera_vec = np.dot(mat_rot, camera_vec)
