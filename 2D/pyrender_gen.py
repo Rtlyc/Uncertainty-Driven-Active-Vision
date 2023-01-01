@@ -14,7 +14,7 @@ mesh = trimesh.load(object_path)
 renderer.remove_objects()
 renderer.add_object(mesh,  add_faces=True)
 
-location = renderer.random_position(radius=30, num=1, seed=2)
+location = renderer.random_position(radius=20, num=1, seed=2)
 print(location)
 # location = np.array([[5,0,0]])
 orientation = renderer.cam_from_positions(location)
