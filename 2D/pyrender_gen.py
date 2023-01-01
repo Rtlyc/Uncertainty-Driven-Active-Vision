@@ -30,6 +30,8 @@ import numpy as np
 import math
 from scipy.spatial.transform import Rotation as R
 
+DEBUG = False
+
 # Load the mesh and scale it
 object_path = "our_mesh/luomo.obj"
 mesh = trimesh.load(object_path)
@@ -42,7 +44,7 @@ renderer.add_object(mesh,  add_faces=True)
 
 # Define the range of y and x rotations
 r = 0.8
-theta = 180  # Change this value to change the number of rotations
+theta = 90  # Change this value to change the number of rotations
 y = 180 // theta
 x = 360 // theta
 idx = 0
@@ -64,13 +66,14 @@ for y_rot in range(y):
             [0, np.sin(np.deg2rad(theta * x_rot)), np.cos(np.deg2rad(theta * x_rot))]])
 
         mat_rot = np.dot(y_mat_rot, x_mat_rot)
-        print(mat_rot)
+        if DEBUG: print(f"Rotation matrix: {mat_rot}")
         camera_vec = np.array([0, 0, r])
         camera_rot = np.array([0, 0, 0, 1])
         camera_vec = np.dot(mat_rot, camera_vec)
         camera_rot = R.from_matrix(mat_rot).as_euler("xyz", degrees=True)
-        print(f"Camera position: {camera_vec}")
-        print(f"Camera rotation: {camera_rot}")
+        if DEBUG: 
+            print(f"Camera position: {camera_vec}")
+            print(f"Camera rotation: {camera_rot}")
 
         renderer.update_camera_pose(camera_vec, camera_rot)
 
