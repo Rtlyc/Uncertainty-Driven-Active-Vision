@@ -71,6 +71,7 @@ for y_rot in range(y):
         camera_vec = np.dot(mat_rot, camera_vec)
         camera_rot = R.from_matrix(mat_rot)
         camera_rot = camera_rot.as_euler("xyz", degrees=True)
+        camera_rot = renderer.cam_from_positions(camera_vec)
         if DEBUG: 
             print(f"Camera position: {camera_vec}")
             print(f"Camera rotation: {camera_rot}")
