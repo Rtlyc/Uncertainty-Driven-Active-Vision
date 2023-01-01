@@ -27,7 +27,6 @@ import numpy as np
 
 import trimesh
 import numpy as np
-import mathutils
 import math
 
 # Load the mesh and scale it
@@ -50,17 +49,25 @@ output_dir = "luomo_raw"
 
 # Loop over the rotations
 for y_rot in range(y):
-    y_mat_rot = mathutils.Matrix.Rotation(math.radians(theta*y_rot), 4, 'Y')
+    # Create a rotation matrix for the y-axis
+    y_mat_rot = np.array([
+        [np.cos(np.deg2rad(theta * y_rot)), 0, np.sin(np.deg2rad(theta * y_rot))],
+        [0, 1, 0],
+        [-np.sin(np.deg2rad(theta * y_rot)), 0, np.cos(np.deg2rad(theta * y_rot))]
+    ])
     for x_rot in range(x):
-        x_mat_rot = mathutils.Matrix.Rotation(math.radians(theta*x_rot), 4, 'X')
-        mat_rot = y_mat_rot @ x_mat_rot
-        
-        # Update the camera location and orientation
-        camera_vec = mathutils.Vector((0, 0, r))
-        camera_vec = mat_rot @ camera_vec 
-        camera_rot = renderer.cam_from_positions(camera_vec)
+        # Create a rotation matrix for the x-axis
+        x_mat_rot = np.array([
+            [1, 0, 0],
+            [0, np.cos(np.deg2rad(theta * x_rot)), -np.sin(np.deg2rad(theta * x_rot))],
+            [0, np.sin(np.deg2rad(theta * x_rot)), np.cos(np.deg2rad(theta * x_rot))]])
 
+        mat_rot = np.dot(y_mat_rot, x_mat_rot)
+        camera_vec = np.array([0, 0, r])
+        camera_vec = np.dot(mat_rot, camera_vec)
+        camera_rot = renderer.cam_from_positions(camera_vec)
         renderer.update_camera_pose(camera_vec, camera_rot)
+
         
         # Render the scene and save the image
         image = Image.fromarray(renderer.render())
