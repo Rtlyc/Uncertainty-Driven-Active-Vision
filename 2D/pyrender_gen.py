@@ -8,19 +8,38 @@ import trimesh
 renderer = rendering.Renderer([128, 128])
 
 # load the object
-object_path = "2D/our_mesh/luomo.obj"
+object_path = "our_mesh/luomo.obj"
+# mesh = trimesh.load(object_path)
+# renderer.remove_objects()
+# renderer.add_object(mesh)
+
+# location = renderer.random_position(radius=1, num=1, seed=0)
+# orientation = renderer.cam_from_positions(location)
+# renderer.update_camera_pose(location, orientation)
+# image = Image.fromarray(renderer.render())
+
+
+# image.save('image.png')
+
+
+import pyrender
+
+# Load the mesh data using trimesh
 mesh = trimesh.load(object_path)
-renderer.remove_objects()
-renderer.add_object(mesh)
 
-location = renderer.random_position(radius=1, num=1, seed=0)
-orientation = renderer.cam_from_positions(location)
-renderer.update_camera_pose(location, orientation)
-image = Image.fromarray(renderer.render())
+# Create a pyrender Mesh object from the trimesh object
+pr_mesh = pyrender.Mesh.from_trimesh(mesh)
 
+# Add the mesh to a pyrender Scene
+scene = pyrender.Scene()
+scene.add(pr_mesh)
 
-image.save('image.png')
+# Render the scene
+renderer = pyrender.OffscreenRenderer(viewport_width=640, viewport_height=480)
+color, depth = renderer.render(scene)
 
+# Save the rendered image
+image = pyrender.imwrite.imwrite("render.jpg", color)
 
 
 
