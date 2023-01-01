@@ -64,8 +64,10 @@ for y_rot in range(y):
 
         mat_rot = np.dot(y_mat_rot, x_mat_rot)
         camera_vec = np.array([0, 0, r])
+        camera_rot = np.array([0, 0, 0, 1])
         camera_vec = np.dot(mat_rot, camera_vec)
-        camera_rot = renderer.cam_from_positions(camera_vec)
+        camera_rot = np.dot(mat_rot, camera_rot)
+
         renderer.update_camera_pose(camera_vec, camera_rot)
 
         
