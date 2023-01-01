@@ -16,7 +16,7 @@ mesh.apply_scale([scale, scale, scale])
 renderer.remove_objects()
 renderer.add_object(mesh,  add_faces=True)
 
-location = renderer.random_position(radius=0.8, num=1, seed=2)
+location = renderer.random_position(radius=0.8, num=1, seed=3)
 print(location)
 orientation = renderer.cam_from_positions(location)
 renderer.update_camera_pose(location, orientation)
