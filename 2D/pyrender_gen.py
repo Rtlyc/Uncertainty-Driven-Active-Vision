@@ -5,7 +5,6 @@ from utils import rendering
 from PIL import Image
 import trimesh
 
-os.environ['PYOPENGL_PLATFORM'] = 'osmesa'
 renderer = rendering.Renderer([128, 128])
 
 # load the object
