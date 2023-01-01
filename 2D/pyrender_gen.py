@@ -15,6 +15,7 @@ renderer.remove_objects()
 renderer.add_object(mesh,  add_faces=True)
 
 location = renderer.random_position(radius=5, num=1, seed=0)
+print(location)
 location = np.array([[5,0,0]])
 orientation = renderer.cam_from_positions(location)
 renderer.update_camera_pose(location, orientation)
