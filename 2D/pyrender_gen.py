@@ -30,7 +30,7 @@ import numpy as np
 import math
 from scipy.spatial.transform import Rotation as R
 
-DEBUG = True
+DEBUG = False
 
 # Load the mesh and scale it
 object_path = "our_mesh/luomo.obj"
@@ -48,7 +48,7 @@ theta = 10  # Change this value to change the number of rotations
 y = 180 // theta
 x = 360 // theta
 idx = 0
-output_dir = "luomo_raw"
+output_dir = "../luomo_raw"
 
 # Loop over the rotations
 for y_rot in range(y):
