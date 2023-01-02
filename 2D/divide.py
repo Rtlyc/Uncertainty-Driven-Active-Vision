@@ -8,8 +8,8 @@ img_dir = 'luomo_raw'
 dest_dir = 'luomo'
 
 # Iterate through the images and copy them to the destination in groups of 5
-group_size = 2
-for i in range(0, 8):
+group_size = 6
+for i in range(0, 600):
     img_name = str(i) + '.png'
     npy_name = "P_" + str(i) + '.npy'
     img_path = os.path.join(img_dir, img_name)
