@@ -80,7 +80,7 @@ for y_rot in range(y):
         # camera_rot = camera_rot.as_euler("xyz", degrees=True)
         # camera_rot = renderer.cam_from_positions(camera_vec)
 
-        quaternion = np.array([0, 0, 0, 1])
+        quaternion = R.from_quat([0, 0, 0, 1])
         rotation = R.from_matrix(mat_rot)
         rot_quat = rotation * quaternion
         camera_rot = rot_quat.tolist()
