@@ -71,9 +71,6 @@ for y_rot in range(y):
         camera_vec = np.dot(mat_rot, camera_vec)
 
         camera_rot = R.from_matrix(mat_rot)
-        camera_rot = camera_rot.apply_to_quat([0, 0, 0, 1])
-
-        # camera_rot = R.from_matrix(mat_rot)
         camera_rot = camera_rot.as_euler("xyz", degrees=True)
         # camera_rot = renderer.cam_from_positions(camera_vec)
         if DEBUG: 
