@@ -82,7 +82,7 @@ for y_rot in range(y):
 
         quaternion = np.array([0, 0, 0, 1])
         rotation = R.from_matrix(mat_rot)
-        rot_quat = rotation.rotate(quaternion)
+        rot_quat = rotation.apply(quaternion)
         camera_rot = rot_quat.tolist()
 
         if DEBUG: 
