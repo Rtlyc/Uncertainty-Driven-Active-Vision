@@ -72,8 +72,8 @@ for y_rot in range(y):
 
         camera_rot = R.from_quat([0, 0, 0, 1])
         rotation = R.from_matrix(mat_rot)
-        camera_rot = rotation.apply(camera_rot)
-        camera_rot = R.to_euler(camera_rot, degrees=True)
+        camera_rot = camera_rot * rotation
+        camera_rot = camera_rot.as_euler("xyz", degrees=True)
 
 
         # camera_rot = R.from_matrix(mat_rot)
