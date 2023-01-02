@@ -70,7 +70,7 @@ for y_rot in range(y):
         camera_vec = np.array([0, 0, r])
         camera_vec = np.dot(mat_rot, camera_vec)
 
-        camera_rot = R.from_rotvec([]).as_quat()
+        camera_rot = R.from_quat([0, 0, 0, 1])
         rotation = R.from_matrix(mat_rot)
         camera_rot = rotation.apply(camera_rot)
         camera_rot = R.to_euler(camera_rot, degrees=True)
