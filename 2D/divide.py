@@ -2,10 +2,10 @@ import os
 import shutil
 
 # Set the directory containing the images
-img_dir = 'luomo_raw'
+img_dir = '../luomo_raw'
 
 # Set the destination directory for the folders
-dest_dir = 'luomo'
+dest_dir = '../luomo'
 
 # Iterate through the images and copy them to the destination in groups of 5
 group_size = 6
