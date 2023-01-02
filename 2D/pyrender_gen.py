@@ -83,7 +83,7 @@ for y_rot in range(y):
         quaternion = R.from_quat([0, 0, 0, 1])
         rotation = R.from_matrix(mat_rot)
         rot_quat = rotation * quaternion
-        camera_rot = rot_quat.tolist()
+        camera_rot = rot_quat.as_euler("xyz", degrees=True)
 
         if DEBUG: 
             print(f"Camera position: {camera_vec}")
