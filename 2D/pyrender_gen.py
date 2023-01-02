@@ -44,7 +44,7 @@ renderer.add_object(mesh,  add_faces=True)
 
 # Define the range of y and x rotations
 r = 0.8
-theta = 10  # Change this value to change the number of rotations
+theta = 90  # Change this value to change the number of rotations
 y = 180 // theta
 x = 360 // theta
 idx = 0
@@ -70,8 +70,14 @@ for y_rot in range(y):
         camera_vec = np.array([0, 0, r])
         camera_vec = np.dot(mat_rot, camera_vec)
 
-        camera_rot = R.from_matrix(mat_rot)
-        camera_rot = camera_rot.as_euler("xyz", degrees=True)
+        camera_rot = R.from_rotvec([]).as_quat()
+        rotation = R.from_matrix(mat_rot)
+        camera_rot = rotation.apply(camera_rot)
+        camera_rot = R.to_euler(camera_rot, degrees=True)
+
+
+        # camera_rot = R.from_matrix(mat_rot)
+        # camera_rot = camera_rot.as_euler("xyz", degrees=True)
         # camera_rot = renderer.cam_from_positions(camera_vec)
         if DEBUG: 
             print(f"Camera position: {camera_vec}")
