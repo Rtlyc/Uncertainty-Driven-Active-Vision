@@ -30,7 +30,7 @@ import numpy as np
 import math
 from scipy.spatial.transform import Rotation as R
 
-DEBUG = False
+DEBUG = True
 
 # Load the mesh and scale it
 object_path = "our_mesh/luomo.obj"
@@ -74,11 +74,17 @@ for y_rot in range(y):
         # rotation = R.from_matrix(mat_rot)
         # camera_rot = camera_rot * rotation
         # camera_rot = camera_rot.as_euler("xyz", degrees=True)
-        camera_rot = R.from_euler("xyz", [theta * x_rot, theta * y_rot, 0], degrees=True).as_euler("xyz", degrees=True)
+        # camera_rot = R.from_euler("xyz", [theta * x_rot, theta * y_rot, 0], degrees=True).as_euler("xyz", degrees=True)
 
         # camera_rot = R.from_matrix(mat_rot)
         # camera_rot = camera_rot.as_euler("xyz", degrees=True)
         # camera_rot = renderer.cam_from_positions(camera_vec)
+
+        quaternion = np.array([0, 0, 0, 1])
+        rotation = R.from_matrix(mat_rot)
+        rot_quat = rotation.rotate(quaternion)
+        camera_rot = rot_quat.tolist()
+
         if DEBUG: 
             print(f"Camera position: {camera_vec}")
             print(f"Camera rotation: {camera_rot}")
