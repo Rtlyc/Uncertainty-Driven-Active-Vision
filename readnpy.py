@@ -1,7 +1,7 @@
 import numpy as np
 
-file1 = "luomo_blender/1/P_3.npy"
-file2 = "luomo/1/P_3.npy"
+file1 = "luomo_blender/1/P_4.npy"
+file2 = "luomo/1/P_4.npy"
 
 data1 = np.load(file1, allow_pickle=True)
 data2 = np.load(file2, allow_pickle=True)
