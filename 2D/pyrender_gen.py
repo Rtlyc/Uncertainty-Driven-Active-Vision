@@ -119,23 +119,21 @@ for y_rot in range(1):
 
 import math
 
-def calculate_camera_position(distance, rotation_x, rotation_y):
-  x = distance * math.sin(rotation_y) * math.cos(rotation_x)
-  y = distance * math.sin(rotation_y) * math.sin(rotation_x)
-  z = distance * math.cos(rotation_y)
-  return (x, y, z)
+def calculate_camera_position_and_orientation(distance, rotation_degree_x, rotation_degree_y):
+    # Calculate the camera position
+    camera_x = distance * math.sin(math.radians(rotation_degree_y)) * math.cos(math.radians(rotation_degree_x))
+    camera_y = distance * math.sin(math.radians(rotation_degree_x))
+    camera_z = distance * math.cos(math.radians(rotation_degree_y)) * math.cos(math.radians(rotation_degree_x))
+    camera_position = (camera_x, camera_y, camera_z)
+    
+    # Calculate the camera orientation (in euler angles)
+    camera_roll = 0
+    camera_pitch = -rotation_degree_x
+    camera_yaw = 180 - rotation_degree_y
+    camera_orientation = (camera_roll, camera_pitch, camera_yaw)
+    
+    return camera_position, camera_orientation
 
-def calculate_camera_orientation(camera_position, origin):
-  direction = [origin[i] - camera_position[i] for i in range(3)]
-  return direction
+print(calculate_camera_position_and_orientation(1, 0, 0))
 
-distance = 10.0
-rotation_x = math.pi / 4 * 0
-rotation_y = math.pi / 4 * 0
-
-camera_position = calculate_camera_position(distance, rotation_x, rotation_y)
-camera_orientation = calculate_camera_orientation(camera_position, (0, 0, 0))
-
-print(f"Camera position: {camera_position}")
-print(f"Camera orientation: {camera_orientation}")
 
