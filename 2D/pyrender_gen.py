@@ -51,6 +51,8 @@ x = 360 // theta
 idx = 0
 output_dir = "../luomo_raw"
 
+r'''
+
 # Loop over the rotations
 for y_rot in range(1):
     # Create a rotation matrix for the y-axis
@@ -108,7 +110,30 @@ for y_rot in range(1):
 
 
 
+'''
 
 
 
 
+
+
+import math
+
+def calculate_camera_position_and_orientation(radius, x_rotation_degrees, y_rotation_degrees):
+    # Convert rotation degrees to radians
+    x_rotation_radians = math.radians(x_rotation_degrees)
+    y_rotation_radians = math.radians(y_rotation_degrees)
+    
+    # Calculate position
+    x_position = radius * math.sin(x_rotation_radians) * math.cos(y_rotation_radians)
+    y_position = radius * math.sin(x_rotation_radians) * math.sin(y_rotation_radians)
+    z_position = radius * math.cos(x_rotation_radians)
+    
+    # Calculate orientation (pointing direction)
+    x_orientation = -math.sin(y_rotation_radians)
+    y_orientation = math.cos(y_rotation_radians)
+    z_orientation = 0
+    
+    return (x_position, y_position, z_position), (x_orientation, y_orientation, z_orientation)
+
+print(calculate_camera_position_and_orientation(1, 0, 0))
