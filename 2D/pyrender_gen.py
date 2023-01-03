@@ -126,15 +126,15 @@ def calculate_camera_position_and_orientation(distance, rotation_degree_x, rotat
     camera_z = distance * math.cos(math.radians(rotation_degree_y)) * math.cos(math.radians(rotation_degree_x))
     camera_position = (camera_x, camera_y, camera_z)
     
-    # Calculate the camera orientation (in euler angles)
-    camera_roll = 0
-    camera_pitch = -rotation_degree_x
-    camera_yaw = 180 - rotation_degree_y
-    camera_orientation = (camera_roll, camera_pitch, camera_yaw)
+    # # Calculate the camera orientation (in euler angles)
+    # camera_roll = 0
+    # camera_pitch = -rotation_degree_x
+    # camera_yaw = 180 - rotation_degree_y
+    # camera_orientation = (camera_roll, camera_pitch, camera_yaw)
     
-    return camera_position, camera_orientation
+    return camera_position
 
-camera_vec, camera_rot = calculate_camera_position_and_orientation(0.8, 10, 0)
+camera_vec = calculate_camera_position_and_orientation(0.8, 30, 0)
 camera_rot = renderer.cam_from_positions(np.array(camera_vec))
 print(f"Camera position: {camera_vec}")
 print(f"Camera rotation: {camera_rot}")
