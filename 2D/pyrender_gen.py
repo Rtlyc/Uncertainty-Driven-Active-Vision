@@ -44,7 +44,7 @@ renderer.add_object(mesh,  add_faces=True)
 
 # Define the range of y and x rotations
 r = 0.8
-theta = 90  # Change this value to change the number of rotations
+theta = 45  # Change this value to change the number of rotations
 y = 180 // theta
 x = 360 // theta
 idx = 0
