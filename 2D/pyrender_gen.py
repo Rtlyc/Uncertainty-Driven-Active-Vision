@@ -134,34 +134,34 @@ def calculate_camera_position(distance, rotation_degree_x, rotation_degree_y):
     
     return camera_position
 
-# camera_vec = calculate_camera_position(0.8, 300, 0)
-# camera_rot = renderer.cam_from_positions(np.array(camera_vec))
-# print(f"Camera position: {camera_vec}")
-# print(f"Camera rotation: {camera_rot}")
-# renderer.update_camera_pose(camera_vec, camera_rot)
+camera_vec = calculate_camera_position(0.8, 10, 10)
+camera_rot = renderer.cam_from_positions(np.array(camera_vec))
+print(f"Camera position: {camera_vec}")
+print(f"Camera rotation: {camera_rot}")
+renderer.update_camera_pose(camera_vec, camera_rot)
 # Render the scene and save the image
-# image = Image.fromarray(renderer.render())
-# img_name = f"{idx}.png"
-# image.save(os.path.join(output_dir, img_name))
+image = Image.fromarray(renderer.render())
+img_name = f"{idx}.png"
+image.save(os.path.join(output_dir, img_name))
 
-for y_rot in range(360//theta):
-    for x_rot in range(360//theta):
-        camera_vec = calculate_camera_position(r, theta * x_rot, theta * y_rot)
-        camera_rot = renderer.cam_from_positions(np.array(camera_vec))
-        if DEBUG: 
-            print(f"Camera position: {camera_vec}")
-            print(f"Camera rotation: {camera_rot}")
-        renderer.update_camera_pose(camera_vec, camera_rot)
-        # Render the scene and save the image
-        image = Image.fromarray(renderer.render())
-        img_name = f"{idx}.png"
-        image.save(os.path.join(output_dir, img_name))
-        # Save the camera position and orientation
-        d = {}
-        d['position'] = np.array(camera_vec)
-        d['rotation'] = np.array(camera_rot)
-        npy_name = f"P_{idx}.npy"
-        np.save(os.path.join(output_dir, npy_name), d)
-        idx += 1
+# for y_rot in range(360//theta):
+#     for x_rot in range(360//theta):
+#         camera_vec = calculate_camera_position(r, theta * x_rot, theta * y_rot)
+#         camera_rot = renderer.cam_from_positions(np.array(camera_vec))
+#         if DEBUG: 
+#             print(f"Camera position: {camera_vec}")
+#             print(f"Camera rotation: {camera_rot}")
+#         renderer.update_camera_pose(camera_vec, camera_rot)
+#         # Render the scene and save the image
+#         image = Image.fromarray(renderer.render())
+#         img_name = f"{idx}.png"
+#         image.save(os.path.join(output_dir, img_name))
+#         # Save the camera position and orientation
+#         d = {}
+#         d['position'] = np.array(camera_vec)
+#         d['rotation'] = np.array(camera_rot)
+#         npy_name = f"P_{idx}.npy"
+#         np.save(os.path.join(output_dir, npy_name), d)
+#         idx += 1
 
 
