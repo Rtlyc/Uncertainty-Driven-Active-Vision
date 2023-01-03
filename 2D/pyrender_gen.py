@@ -134,4 +134,4 @@ def calculate_camera_position_and_orientation(radius, x_rotation_degrees, y_rota
     
     return (x_position, y_position, z_position), (x_rotation_degrees, y_rotation_degrees, 0)
 
-print(calculate_camera_position_and_orientation(1, 0, 0))
+print(calculate_camera_position_and_orientation(1, 30, 0))
