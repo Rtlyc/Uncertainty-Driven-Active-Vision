@@ -44,7 +44,6 @@ renderer.add_object(mesh,  add_faces=True)
 
 # Define the range of y and x rotations
 r = 0.8
-r = 1
 theta = 30  # Change this value to change the number of rotations
 y = 180 // theta
 x = 360 // theta
@@ -135,7 +134,7 @@ def calculate_camera_position_and_orientation(distance, rotation_degree_x, rotat
     
     return camera_position, camera_orientation
 
-camera_vec, camera_rot = calculate_camera_position_and_orientation(1, 30, 0)
+camera_vec, camera_rot = calculate_camera_position_and_orientation(0.8, 30, 0)
 renderer.update_camera_pose(camera_vec, camera_rot)
 # Render the scene and save the image
 image = Image.fromarray(renderer.render())
