@@ -119,6 +119,8 @@ for y_rot in range(1):
 
 import math
 
+
+
 def calculate_camera_position_and_orientation(radius, x_rotation_degrees, y_rotation_degrees):
     # Convert rotation degrees to radians
     x_rotation_radians = math.radians(x_rotation_degrees)
@@ -128,12 +130,8 @@ def calculate_camera_position_and_orientation(radius, x_rotation_degrees, y_rota
     x_position = radius * math.sin(x_rotation_radians) * math.cos(y_rotation_radians)
     y_position = radius * math.sin(x_rotation_radians) * math.sin(y_rotation_radians)
     z_position = radius * math.cos(x_rotation_radians)
+
     
-    # Calculate orientation (pointing direction)
-    x_orientation = -math.sin(y_rotation_radians)
-    y_orientation = math.cos(y_rotation_radians)
-    z_orientation = 0
-    
-    return (x_position, y_position, z_position), (x_orientation, y_orientation, z_orientation)
+    return (x_position, y_position, z_position), (x_rotation_degrees, y_rotation_degrees, 0)
 
 print(calculate_camera_position_and_orientation(1, 0, 0))
