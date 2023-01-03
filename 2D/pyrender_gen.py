@@ -50,6 +50,7 @@ y = 180 // theta
 x = 360 // theta
 idx = 0
 output_dir = "../luomo_raw"
+output_dir = "luomo_raw"
 
 r'''
 
@@ -134,6 +135,11 @@ def calculate_camera_position_and_orientation(distance, rotation_degree_x, rotat
     
     return camera_position, camera_orientation
 
-print(calculate_camera_position_and_orientation(1, 30, 0))
+camera_vec, camera_rot = calculate_camera_position_and_orientation(1, 30, 0)
+renderer.update_camera_pose(camera_vec, camera_rot)
+# Render the scene and save the image
+image = Image.fromarray(renderer.render())
+img_name = f"{idx}.png"
+image.save(os.path.join(output_dir, img_name))
 
 
