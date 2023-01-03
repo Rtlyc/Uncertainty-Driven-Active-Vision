@@ -119,19 +119,23 @@ for y_rot in range(1):
 
 import math
 
+def calculate_camera_position(distance, rotation_x, rotation_y):
+  x = distance * math.sin(rotation_y) * math.cos(rotation_x)
+  y = distance * math.sin(rotation_y) * math.sin(rotation_x)
+  z = distance * math.cos(rotation_y)
+  return (x, y, z)
 
+def calculate_camera_orientation(camera_position, origin):
+  direction = [origin[i] - camera_position[i] for i in range(3)]
+  return direction
 
-def calculate_camera_position_and_orientation(radius, x_rotation_degrees, y_rotation_degrees):
-    # Convert rotation degrees to radians
-    x_rotation_radians = math.radians(x_rotation_degrees)
-    y_rotation_radians = math.radians(y_rotation_degrees)
-    
-    # Calculate position
-    x_position = radius * math.sin(x_rotation_radians) * math.cos(y_rotation_radians)
-    y_position = radius * math.sin(x_rotation_radians) * math.sin(y_rotation_radians)
-    z_position = radius * math.cos(x_rotation_radians)
+distance = 10.0
+rotation_x = math.pi / 4 * 0
+rotation_y = math.pi / 4 * 0
 
-    
-    return (x_position, y_position, z_position), (x_rotation_degrees, y_rotation_degrees, 0)
+camera_position = calculate_camera_position(distance, rotation_x, rotation_y)
+camera_orientation = calculate_camera_orientation(camera_position, (0, 0, 0))
 
-print(calculate_camera_position_and_orientation(1, 30, 0))
+print(f"Camera position: {camera_position}")
+print(f"Camera orientation: {camera_orientation}")
+
