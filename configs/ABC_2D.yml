@@ -21,7 +21,7 @@ model:
   initial_size: 16 # initial size of CNN channel in CNN
 
 optimizer:
-  lr: 0.0005 # learning rate 0.00005
+  lr: 0.00005 # learning rate 0.00005
 
 loss:
   num_rays: 32 # number of pixels to samples from each target image which training
