@@ -134,7 +134,7 @@ def calculate_camera_position_and_orientation(distance, rotation_degree_x, rotat
     
     return camera_position, camera_orientation
 
-camera_vec, camera_rot = calculate_camera_position_and_orientation(0.8, 30, 0)
+camera_vec, camera_rot = calculate_camera_position_and_orientation(0.8, 0, 0)
 print(f"Camera position: {camera_vec}")
 print(f"Camera rotation: {camera_rot}")
 renderer.update_camera_pose(camera_vec, camera_rot)
