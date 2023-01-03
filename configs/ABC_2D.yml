@@ -9,7 +9,7 @@ experiment:
   randomseed: 42  # seed
   patience: 500 # how many epoch without improvement before stopping
   batch_size: 16 # batch size
-  num_epochs: 100 # number of epochs 1000
+  num_epochs: 1000 # number of epochs 1000
 
 model:
   image_embedding: 64 # size of the image embedding from the CNN
