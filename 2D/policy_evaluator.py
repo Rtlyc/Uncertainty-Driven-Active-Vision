@@ -184,6 +184,8 @@ class Engine(Checkpointable):
         print(f"positions shape: {positions.shape}")
 
         for i in range(imgs.shape[0]):
+            print("hello")
+            print(imgs[i].shape)
             image = Image.fromarray(imgs[i])
             img_name = f"{i}.png"
             image.save(os.path.join("our_output", img_name))
