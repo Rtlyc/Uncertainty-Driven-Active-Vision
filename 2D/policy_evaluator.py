@@ -180,12 +180,9 @@ class Engine(Checkpointable):
         # TODO: output images and positions
 
         for i in range(imgs.shape[0]):
-            gt_colour = (
-                (rearrange(imgs[-1:], "b c w h -> w (b h) c") * 255)
-                .data.cpu()
-                .numpy()
-            )
-            image = Image.fromarray(gt_colour.astype(np.uint8))
+            image = imgs[0][i]
+            image = (rearrange(image, "c w h -> w h c") * 255).data.cpu().numpy()
+            image = Image.fromarray(image.astype(np.uint8))
             img_name = f"{i}.png"
             image.save(os.path.join("our_output", img_name))
 
