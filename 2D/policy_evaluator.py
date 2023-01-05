@@ -180,16 +180,19 @@ class Engine(Checkpointable):
             )
             policy_loss.append(loss)
         # TODO: output images and positions
-
+        output_dir = "our_output"
         for i in range(imgs.shape[1]):
             image = imgs[0][i]
             image = (rearrange(image, "c w h -> w h c") * 255).data.cpu().numpy()
             image = Image.fromarray(image.astype(np.uint8))
             img_name = f"{i}.png"
-            image.save(os.path.join("our_output", img_name))
+            image.save(os.path.join(output_dir, img_name))
 
-            position_name = f"positions_{i}.npy"
-            # np.save(os.path.join("our_output", position_name), positions[i][:3])
+            d = {}
+            d['position'] = np.array(params[0][i][0:3])
+            d['rotation'] = np.array(params[0][i][3:])
+            npy_name = f"P_{i}.npy"
+            np.save(os.path.join(output_dir, npy_name), d)
 
 
 
