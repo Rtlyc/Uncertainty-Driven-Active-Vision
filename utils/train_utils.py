@@ -86,6 +86,7 @@ def get_uncertainty(self, occ_fun, checks, ray_points, ray_masks, dists, chunk_s
     dists = dists.view(checks, -1, 128 )
 
     # compute direcitonal derivative
+    position %= 4 #? make sure position is in range 4
     if self.cfg_policy.uncert.dir_dir[position] > 0:
         dir = torch.abs(value[:, :, :-2] - value[:, :, 2:])
         dir_value = (1 - ((dir + 1e-8) ** self.cfg_policy.uncert.dir_dir[position]))
