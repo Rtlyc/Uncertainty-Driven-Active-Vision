@@ -27,6 +27,6 @@ loss:
   num_rays: 32 # number of pixels to samples from each target image which training
 
 NBV:
-  budget: 5 # how many images we want to use
+  budget: 10 # how many images we want to use
 
 
