@@ -179,7 +179,7 @@ class Engine(Checkpointable):
             policy_loss.append(loss)
         # TODO: output images and positions
 
-        for i in range(imgs.shape[0]):
+        for i in range(imgs.shape[1]):
             image = imgs[0][i]
             image = (rearrange(image, "c w h -> w h c") * 255).data.cpu().numpy()
             image = Image.fromarray(image.astype(np.uint8))
