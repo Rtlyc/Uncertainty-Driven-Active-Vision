@@ -183,6 +183,16 @@ class Engine(Checkpointable):
         print(f"imgs shape: {imgs.shape}")
         print(f"positions shape: {positions.shape}")
 
+        for i in range(imgs.shape[0]):
+            image = Image.fromarray(imgs[i])
+            img_name = f"{i}.png"
+            image.save(os.path.join("our_output", img_name))
+
+            position_name = f"positions_{i}.npy"
+            np.save(os.path.join("our_output", position_name), positions[i][:3])
+
+
+
         return policy_loss
 
     # eval the current inputs
