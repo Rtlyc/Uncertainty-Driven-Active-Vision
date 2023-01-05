@@ -16,6 +16,7 @@ import trimesh
 from PIL import Image
 from scipy.spatial.transform import Rotation as R
 import math
+from einops import rearrange
 
 
 import sys
@@ -184,9 +185,12 @@ class Engine(Checkpointable):
         print(f"positions shape: {positions.shape}")
 
         for i in range(imgs.shape[0]):
-            print("hello")
-            image = Image.fromarray(imgs[i] * 255)
-            image = image.astype(np.uint8)
+            gt_colour = (
+                (rearrange(imgs[-1:], "b c w h -> w (b h) c") * 255)
+                .data.cpu()
+                .numpy()
+            )
+            image = Image.fromarray(gt_colour.astype(np.uint8))
             img_name = f"{i}.png"
             image.save(os.path.join("our_output", img_name))
 
