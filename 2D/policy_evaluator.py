@@ -178,11 +178,6 @@ class Engine(Checkpointable):
             )
             policy_loss.append(loss)
         # TODO: output images and positions
-        # output images and positions
-        imgs = imgs[0].cpu().numpy()
-        positions = params[0].cpu().numpy()
-        print(f"imgs shape: {imgs.shape}")
-        print(f"positions shape: {positions.shape}")
 
         for i in range(imgs.shape[0]):
             gt_colour = (
@@ -195,7 +190,7 @@ class Engine(Checkpointable):
             image.save(os.path.join("our_output", img_name))
 
             position_name = f"positions_{i}.npy"
-            np.save(os.path.join("our_output", position_name), positions[i][:3])
+            # np.save(os.path.join("our_output", position_name), positions[i][:3])
 
 
 
