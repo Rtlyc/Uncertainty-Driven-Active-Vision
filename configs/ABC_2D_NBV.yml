@@ -31,7 +31,7 @@ base:
   config: ../configs/ABC_2D.yml # the config file of the reconstruction model chosen
 
 eval:
-  num_initialization: 2 # number of evaluations per object
+  num_initialization: 1 # number of evaluations per object
   chunk_size: 5000 # number of points processed at a time
   num_points_iou: 1000 # number of points samples for iou evaluation
   num_rays_per_img: 200 # number fo pixels sampled from each target image for evaluation
