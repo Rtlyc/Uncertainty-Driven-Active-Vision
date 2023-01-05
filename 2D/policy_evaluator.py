@@ -185,7 +185,7 @@ class Engine(Checkpointable):
 
         for i in range(imgs.shape[0]):
             print("hello")
-            image = Image.fromarray(imgs[i])
+            image = Image.fromarray(imgs[i] * 255)
             image = image.astype(np.uint8)
             img_name = f"{i}.png"
             image.save(os.path.join("our_output", img_name))
