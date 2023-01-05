@@ -175,6 +175,13 @@ class Engine(Checkpointable):
                 imgs, mats, params, positions, j, seed
             )
             policy_loss.append(loss)
+        # TODO: output images and positions
+        # output images and positions
+        imgs = imgs[0].cpu().numpy()
+        positions = mats[0].cpu().numpy()
+        print(imgs)
+        print(positions)
+
         return policy_loss
 
     # eval the current inputs
