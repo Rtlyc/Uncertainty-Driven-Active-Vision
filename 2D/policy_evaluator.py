@@ -118,6 +118,8 @@ class Engine(Checkpointable):
             self.object_name = self.valid_data.obj_location + f"{obj}.obj"
             self.object_name = "our_mesh/luomo.obj" #? hardcode obj path
             mesh = trimesh.load(self.object_name)
+            scale = 0.013 #? hardcode scale
+            mesh.apply_scale([scale, scale, scale]) #? hardcode scale
             self.renderer.remove_objects()
             self.renderer.add_object(mesh)
 
