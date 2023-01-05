@@ -189,8 +189,8 @@ class Engine(Checkpointable):
             image.save(os.path.join(output_dir, img_name))
 
             d = {}
-            d['position'] = np.array(params[0][i][0:3])
-            d['rotation'] = np.array(params[0][i][3:])
+            d['position'] = np.array(params[0][i][0:3].cpu().numpy())
+            d['rotation'] = np.array(params[0][i][3:].cpu().numpy())
             npy_name = f"P_{i}.npy"
             np.save(os.path.join(output_dir, npy_name), d)
 
