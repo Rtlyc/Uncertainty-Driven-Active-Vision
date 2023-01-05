@@ -28,7 +28,7 @@ grad:
   resolution: 16 # resolution of uncertainty image used
 
 base:
-  config: ../configs/ABC_2D_Pretrained.yml # the config file of the reconstruction model chosen
+  config: ../configs/ABC_2D.yml # the config file of the reconstruction model chosen
 
 eval:
   num_initialization: 2 # number of evaluations per object
