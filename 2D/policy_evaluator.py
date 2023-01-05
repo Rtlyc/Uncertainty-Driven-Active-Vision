@@ -114,12 +114,13 @@ class Engine(Checkpointable):
             # load the object
             obj = self.valid_data.object_names[i][0]
             self.object_name = self.valid_data.obj_location + f"{obj}.obj"
+            self.object_name = "our_mesh/luomo.obj" #? hardcode obj path
             mesh = trimesh.load(self.object_name)
             self.renderer.remove_objects()
             self.renderer.add_object(mesh)
 
             # get gt info
-            self.get_gt_occ(obj, i)
+            self.get_gt_occ(obj, i) #? not used voxel info for now
             self.get_gt_colours(i)
 
             obj_loss = []
@@ -212,6 +213,7 @@ class Engine(Checkpointable):
             if psnr == 0 or math.isnan(psnr) or math.isinf(psnr):
                 psnr = 5.0
 
+            '''
             # get iou
             fun = lambda x: torch.sigmoid(
                 self.model.embedding_to_occ(embedding, x, mats, params, position)
@@ -236,6 +238,9 @@ class Engine(Checkpointable):
             )
             if iou == 0 or math.isnan(iou) or math.isinf(iou):
                 iou = 0.01
+
+            '''
+            iou = 0.0 #? DO Not use iou for now
             loss = [psnr, iou]
 
         return loss
