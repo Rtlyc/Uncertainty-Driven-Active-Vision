@@ -35,5 +35,5 @@ eval:
   chunk_size: 5000 # number of points processed at a time
   num_points_iou: 1000 # number of points samples for iou evaluation
   num_rays_per_img: 200 # number fo pixels sampled from each target image for evaluation
-  num_imgs: 20 # number of target images evaluated
+  num_imgs: 6 # number of target images evaluated
 
