@@ -109,7 +109,8 @@ class Engine(Checkpointable):
         self.model.eval()
 
         total_loss = []
-        for i in tqdm(range(len(self.valid_data.object_names))):
+        # for i in tqdm(range(len(self.valid_data.object_names))):
+        for i in tqdm(range(1)): #? only use one object
 
             # load the object
             obj = self.valid_data.object_names[i][0]
@@ -178,9 +179,9 @@ class Engine(Checkpointable):
         # TODO: output images and positions
         # output images and positions
         imgs = imgs[0].cpu().numpy()
-        positions = mats[0].cpu().numpy()
-        print(imgs)
-        print(positions)
+        positions = params[0].cpu().numpy()
+        print(f"imgs shape: {imgs.shape}")
+        print(f"positions shape: {positions.shape}")
 
         return policy_loss
 
