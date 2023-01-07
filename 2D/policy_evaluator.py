@@ -110,16 +110,16 @@ class Engine(Checkpointable):
         self.model.eval()
 
         total_loss = []
-        # for i in tqdm(range(len(self.valid_data.object_names))):
-        for i in tqdm(range(1)): #? only use one object
+        for i in tqdm(range(len(self.valid_data.object_names))):
+        # for i in tqdm(range(1)): #? only use one object
 
             # load the object
             obj = self.valid_data.object_names[i][0]
             self.object_name = self.valid_data.obj_location + f"{obj}.obj"
-            self.object_name = "our_mesh/luomo.obj" #? hardcode obj path
+            # self.object_name = "our_mesh/luomo.obj" #? hardcode obj path
             mesh = trimesh.load(self.object_name)
             scale = 0.013 #? hardcode scale
-            mesh.apply_scale([scale, scale, scale]) #? hardcode scale
+            # mesh.apply_scale([scale, scale, scale]) #? hardcode scale
             self.renderer.remove_objects()
             self.renderer.add_object(mesh)
 
@@ -180,7 +180,9 @@ class Engine(Checkpointable):
             )
             policy_loss.append(loss)
         # TODO: output images and positions
-        output_dir = "our_output"
+        output_dir = f"our_output_{seed}"
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
         for i in range(imgs.shape[1]):
             image = imgs[0][i]
             image = (rearrange(image, "c w h -> w h c") * 255).data.cpu().numpy()
