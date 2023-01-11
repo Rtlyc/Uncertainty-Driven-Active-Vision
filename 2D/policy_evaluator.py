@@ -110,8 +110,8 @@ class Engine(Checkpointable):
         self.model.eval()
 
         total_loss = []
-        for i in tqdm(range(len(self.valid_data.object_names))):
-        # for i in tqdm(range(1)): #? only use one object
+        # for i in tqdm(range(len(self.valid_data.object_names))):
+        for i in tqdm(range(1)): #? only use one object
 
             # load the object
             obj = self.valid_data.object_names[i][0]
