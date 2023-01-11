@@ -359,6 +359,12 @@ class Engine(Checkpointable):
         locations = train_utils.get_locations_random(
             self, positions, self.seed, dist=self.cfg_policy.NBV.location_dist
         )
+
+        #TODO: change locations to be a list of 10 locations 
+        locations = train_utils.get_locations_random(
+            self, positions, 0, dist=self.cfg_policy.NBV.location_dist
+        )
+
         locations = torch.FloatTensor(locations).cuda()
 
         # get uncertainty of each perspective
@@ -380,6 +386,11 @@ class Engine(Checkpointable):
         best_position = uncertainties.mean(-1).argmax()
         location = locations[best_position].data.cpu().numpy()
         orientation = self.renderer.cam_from_positions(location)
+
+        # ? print the info
+        print(f"potential locations: {locations}")
+        print(f"uncertainties: {uncertainties}")
+        print(f"best location: {location}")
 
         return self.update_and_eval(
             location, orientation, imgs, mats, params, positions, position
