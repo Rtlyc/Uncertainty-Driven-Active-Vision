@@ -407,7 +407,9 @@ class Engine(Checkpointable):
         # ? print the info
         print(f"potential locations: {locations}")
         print(f"uncertainties: {uncertainties}")
+        print(f"uncertainties shape: {uncertainties.shape}")
         print(f"best location: {location}")
+        print()
 
         return self.update_and_eval(
             location, orientation, imgs, mats, params, positions, position
