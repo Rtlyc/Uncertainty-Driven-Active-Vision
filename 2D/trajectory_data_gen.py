@@ -16,12 +16,15 @@ from PIL import Image
 import trimesh
 import numpy as np
 from scipy.spatial.transform import Rotation as R
+from datetime import date
+
+today = date.today()
 
 # Create a renderer and add the mesh
 renderer = rendering.Renderer([128, 128])
 
 # read the trajectory data
-action_paths = ["our_output_27"]
+action_paths = ["our_output_20_2023-01-26"]
 all_positions = []
 for action_path in action_paths:
     # iterate through files under the action path
@@ -37,7 +40,9 @@ for action_path in action_paths:
 
 
 paths = ["../data/objects/60.obj"]
-output_dir = "trajectory_data"
+sample_num = 25
+radius = 0.8
+output_dir = f"nerf_data_{today}"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -53,8 +58,6 @@ for i, object_path in enumerate(paths):
         os.makedirs(save_dir)
     
     # iterate through the positions
-    sample_num = 10
-    radius = 0.8
     sample_positions = [all_positions[i][0]]
     for j in range(len(all_positions[i])-1):
         current_position = all_positions[i][j]
