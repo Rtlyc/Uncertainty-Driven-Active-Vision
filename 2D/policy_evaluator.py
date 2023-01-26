@@ -181,7 +181,10 @@ class Engine(Checkpointable):
             )
             policy_loss.append(loss)
         #! output images and positions
-        output_dir = f"our_output_{seed}"
+        from datetime import date
+
+        today = date.today()
+        output_dir = f"{self.cfg.NBV.policy}_policy_{today}"
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         for i in range(imgs.shape[1]):
@@ -278,7 +281,7 @@ class Engine(Checkpointable):
             with torch.no_grad():
                 return self.random_policy(imgs, mats, params, positions, position, seed)
 
-        elif True:
+        elif self.cfg_policy.NBV.policy == "trajectory":
             with torch.no_grad():
                 return self.trajectory_policy(imgs, mats, params, positions, position, seed)
         
@@ -372,27 +375,27 @@ class Engine(Checkpointable):
             self, positions, self.seed, dist=self.cfg_policy.NBV.location_dist
         )
 
-        #!: change locations to be a list of 10 locations 
-        locations = [[ 0.1604,  0.7072,  0.3377],
-        [ 0.2104, -0.3579,  0.6839],
-        [-0.0818,  0.5136,  0.6079],
-        [-0.2956,  0.7398,  0.0733],
-        [ 0.0895,  0.5599, -0.5643],
-        [ 0.3342,  0.4446,  0.5750],
-        [ 0.5810, -0.0748,  0.5448],
-        [-0.5647,  0.2070, -0.5276],
-        [ 0.7847,  0.0386, -0.1506],
-        [-0.5173,  0.6026, -0.0963],
-        [ 0.1095, -0.7698,  0.1882],
-        [ 0.1898,  0.1980,  0.7515],
-        [ 0.6105, -0.4718, -0.2114],
-        [ 0.3099, -0.6896,  0.2615],
-        [ 0.2726, -0.4627, -0.5929],
-        [-0.0776,  0.6173, -0.5030],
-        [-0.5531, -0.0755, -0.5730],
-        [ 0.4168, -0.5232,  0.4388],
-        [-0.5167,  0.6095, -0.0401],
-        [ 0.7016,  0.1543,  0.3521]]
+        # #!: change locations to be a list of 10 locations 
+        # locations = [[ 0.1604,  0.7072,  0.3377],
+        # [ 0.2104, -0.3579,  0.6839],
+        # [-0.0818,  0.5136,  0.6079],
+        # [-0.2956,  0.7398,  0.0733],
+        # [ 0.0895,  0.5599, -0.5643],
+        # [ 0.3342,  0.4446,  0.5750],
+        # [ 0.5810, -0.0748,  0.5448],
+        # [-0.5647,  0.2070, -0.5276],
+        # [ 0.7847,  0.0386, -0.1506],
+        # [-0.5173,  0.6026, -0.0963],
+        # [ 0.1095, -0.7698,  0.1882],
+        # [ 0.1898,  0.1980,  0.7515],
+        # [ 0.6105, -0.4718, -0.2114],
+        # [ 0.3099, -0.6896,  0.2615],
+        # [ 0.2726, -0.4627, -0.5929],
+        # [-0.0776,  0.6173, -0.5030],
+        # [-0.5531, -0.0755, -0.5730],
+        # [ 0.4168, -0.5232,  0.4388],
+        # [-0.5167,  0.6095, -0.0401],
+        # [ 0.7016,  0.1543,  0.3521]]
 
         locations = torch.FloatTensor(locations).cuda()
 
@@ -435,21 +438,22 @@ class Engine(Checkpointable):
         occ_fun = lambda x: self.model.embedding_to_occ(
             embedding, x.unsqueeze(0), mats, params, position - 1
         )[0, ..., 0]
-        num_candidates = self.cfg_policy.candidate.num_candidates
+        num_candidates = self.cfg_policy.trajectory.num_candidates
+        dist_range = self.cfg_policy.trajectory.dist_range
 
         # set random trajectory to consider
         current_position = [0,0,0.8] #TODO: change this to be the current position
         if positions:
             current_position = positions[-1]
-        trajectory_list = train_utils.get_random_delta_positions(self, current_position, radius=0.8, num=num_candidates, seed=0, dist=(0.1, 0.4))
+        trajectory_list = train_utils.get_random_delta_positions(self, current_position, radius=0.8, num=num_candidates, seed=seed, dist=dist_range)
         if DEBUG: print(f"trajectory_list: {trajectory_list}")
 
         # evaluate each trajectory
         trajectory_values = []
-        sample_num = 5
+        sample_num = 10
         for delta_position in trajectory_list:
-            sample_points = train_utils.sample_trajectory(self, current_position, delta_position, radius=0.8, sample_num=sample_num, seed=0)
-            if DEBUG: print(f"sample_points: {sample_points}")
+            sample_points = train_utils.sample_trajectory(self, current_position, delta_position, radius=0.8, sample_num=sample_num, seed=seed)
+            # if DEBUG: print(f"sample_points: {sample_points}")
 
             ray_points, ray_masks, dists = rays.get_rays(
                 self, sample_points, resolution=self.cfg_policy.candidate.resolution
@@ -475,6 +479,7 @@ class Engine(Checkpointable):
         if DEBUG: print(f"best_delta_position: {best_delta_position}")
         best_position = np.array(current_position) + np.array(best_delta_position)
         if DEBUG: print(f"best_position: {best_position}")
+        if DEBUG: print("*"*20)
         orientation = self.renderer.cam_from_positions(best_position)
         
         return self.update_and_eval(
