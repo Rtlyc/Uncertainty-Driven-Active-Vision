@@ -112,7 +112,7 @@ class Engine(Checkpointable):
 
         total_loss = []
         # for i in tqdm(range(len(self.valid_data.object_names))):
-        for i in tqdm(range(1)): #? only use one object
+        for i in tqdm(range(5)): #? only use one object
 
             # load the object
             obj = self.valid_data.object_names[i][0]
@@ -131,7 +131,7 @@ class Engine(Checkpointable):
             obj_loss = []
             for r in range(random_initializations):
                 seed = (i + 1) * random_initializations * self.cfg.NBV.budget * (r + 1)
-                obj_loss.append(self.eval_initialization(seed))
+                obj_loss.append(self.eval_initialization(seed, obj))
             total_loss.append(obj_loss)
 
             # iterate over psnr and iou
@@ -168,7 +168,7 @@ class Engine(Checkpointable):
             print(f"{l} stds : ", stds)
 
     # evaluate an the object with current initialization
-    def eval_initialization(self, seed):
+    def eval_initialization(self, seed, object_name):
         imgs = torch.zeros(1, self.cfg.NBV.budget, 3, 128, 128).cuda()
         mats = torch.zeros(1, self.cfg.NBV.budget, 3, 4).cuda()
         params = torch.zeros(1, self.cfg.NBV.budget, 7).cuda()
@@ -184,7 +184,7 @@ class Engine(Checkpointable):
         from datetime import date
 
         today = date.today()
-        output_dir = f"{self.cfg.NBV.policy}_policy_{today}"
+        output_dir = f"{object_name}_{today}"
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         for i in range(imgs.shape[1]):

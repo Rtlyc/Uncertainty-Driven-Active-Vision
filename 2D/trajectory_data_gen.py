@@ -24,7 +24,7 @@ today = date.today()
 renderer = rendering.Renderer([128, 128])
 
 # read the trajectory data
-action_paths = ["our_output_20_2023-01-26"]
+action_paths = ["60_2023-01-28", "61_2023-01-28", "62_2023-01-28", "63_2023-01-28", "64_2023-01-28"]
 all_positions = []
 for action_path in action_paths:
     # iterate through files under the action path
@@ -38,8 +38,8 @@ for action_path in action_paths:
             print(file_path)
     all_positions.append(positions)
 
-
-paths = ["../data/objects/60.obj"]
+# object mesh paths
+paths = ["../data/objects/60.obj", "../data/objects/61.obj", "../data/objects/62.obj", "../data/objects/63.obj", "../data/objects/64.obj"]
 sample_num = 25
 radius = 0.8
 output_dir = f"nerf_data_{today}"
@@ -73,7 +73,12 @@ for i, object_path in enumerate(paths):
         image = Image.fromarray(renderer.render())
         # save the image
         image.save(os.path.join(save_dir, str(j).zfill(3) + ".png"))
-    
+        # save the pose transformation
+        d = {}
+        d['position'] = np.array(position)
+        d['rotation'] = np.array(orientation)
+        npy_name = f"P_{str(j).zfill(3)}.npy"
+        np.save(os.path.join(save_dir, npy_name), d)
 
 
 

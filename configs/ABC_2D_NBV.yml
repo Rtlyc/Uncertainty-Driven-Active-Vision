@@ -10,8 +10,8 @@ NBV:
   location_dist: .7 # how far apart view must be at minimum
 
 trajectory:
-  dist_range: [1.5, 2.5] # range of distance from each trajectory
-  num_candidates: 30 # number of candidate trajectories considered
+  dist_range: [1.5, 2] # range of distance from each trajectory
+  num_candidates: 20 # number of candidate trajectories considered
 
 uncert:
   uncert_lam : 0 # the minimum value for depth uncertainty weight
