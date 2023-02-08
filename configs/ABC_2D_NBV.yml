@@ -5,7 +5,7 @@
 NBV:
   exp_name: test # experiment name
   inst_name: test # name of instance in experiment
-  policy: trajectory # the policy being evaluated, chosen from : random , even, odd, gradient, candidate, trajectory
+  policy: random_trajectory # the policy being evaluated, chosen from : random , even, odd, gradient, candidate, trajectory, random_trajectory
   budget: 5 # how many input images to consider
   location_dist: .7 # how far apart view must be at minimum
 

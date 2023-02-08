@@ -112,7 +112,7 @@ class Engine(Checkpointable):
 
         total_loss = []
         # for i in tqdm(range(len(self.valid_data.object_names))):
-        for i in tqdm(range(500)): #? only use one object
+        for i in tqdm(range(1)): #? only use one object
 
             # load the object
             obj = self.valid_data.object_names[i][0]
@@ -125,7 +125,7 @@ class Engine(Checkpointable):
             self.renderer.add_object(mesh)
 
             # get gt info
-            self.get_gt_occ(obj, i) #? not used voxel info for now
+            # self.get_gt_occ(obj, i) #? not used voxel info for now
             self.get_gt_colours(i)
 
             obj_loss = []
@@ -285,6 +285,10 @@ class Engine(Checkpointable):
             with torch.no_grad():
                 return self.trajectory_policy(imgs, mats, params, positions, position, seed)
         
+        elif self.cfg_policy.NBV.policy == "random_trajectory":
+            with torch.no_grad():
+                return self.random_trajectory_policy(imgs, mats, params, positions, position, seed)
+
         # using the even or odd policy
         elif (
             "even" in self.cfg_policy.NBV.policy or "odd" in self.cfg_policy.NBV.policy
@@ -484,6 +488,28 @@ class Engine(Checkpointable):
         
         return self.update_and_eval(
             best_position, orientation, imgs, mats, params, positions, position
+        )
+
+    def random_trajectory_policy(self, imgs, mats, params, positions, position, seed=None):
+        # define function from
+        dist_range = self.cfg_policy.trajectory.dist_range
+
+        # set random trajectory to consider
+        current_position = [0,0,0.8] #TODO: change this to be the current position
+        if positions:
+            current_position = positions[-1]
+        trajectory_list = train_utils.get_random_delta_positions(self, current_position, radius=0.8, num=1, seed=seed, dist=dist_range)
+
+        
+        random_delta_position = trajectory_list[0]
+        if DEBUG: print(f"random_delta_position: {random_delta_position}")
+        random_position = np.array(current_position) + np.array(random_delta_position)
+        if DEBUG: print(f"random_position: {random_position}")
+        if DEBUG: print("*"*20)
+        orientation = self.renderer.cam_from_positions(random_position)
+        
+        return self.update_and_eval(
+            random_position, orientation, imgs, mats, params, positions, position
         )
 
 

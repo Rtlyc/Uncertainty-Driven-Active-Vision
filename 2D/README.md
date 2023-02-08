@@ -24,6 +24,8 @@ Inputs: configs, oracle model, object filepath
 
 Outputs: {object_name}_{today}
 
+> Tips: if you want to change configs, please locate the file in configs/ABC_2D_NBV.yml
+
 ```
 python policy_evaluator.py --policy_config ../configs/ABC_2D_NBV.yml
 ```
